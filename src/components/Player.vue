@@ -70,11 +70,11 @@ const promptPlaybackSpeed = () => {
     <source :src="props.src" type="video/mp4">
     Your browser does not support the video tag.
   </video>
-  <div class="my-4 text-gray-500 dark:text-gray-400">
-    <p class="my-2 hidden md:block text-gray-400 dark:text-gray-500"><b>Hotkeys</b>&emsp; Space: Pause, ▲/▼: Volume, ◄/►: Seek, F: Fullscreen</p>
+  <div class="my-4 text-gray-500 dark:text-gray-200">
+    <p class="my-2 hidden md:block text-gray-400 dark:text-gray-300"><b>Hotkeys</b>&emsp; Space: Pause, ▲/▼: Volume, ◄/►: Seek, F: Fullscreen</p>
     <span v-if="startClock">Time spent on this page: {{ startClock }} | </span><a class="cursor-pointer" @click="promptPlaybackSpeed">Set playback speed</a>
   </div>
-  <div class="tracking-wide text-center text-green-600 mt-6">
+  <div class="tracking-wide text-center text-green-600 dark:text-red-500 mt-6">
     <a class="cursor-pointer" @click="$emit('back')">
       <ChevronLeftIcon class="inline-block h-5"/>
       Back</a>

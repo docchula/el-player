@@ -53,7 +53,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative flex items-top justify-center min-h-screen bg-gray-50 dark:bg-gray-900 sm:items-center sm:pt-0">
+  <div class="relative flex items-top justify-center min-h-screen bg-gray-50 dark:bg-transparent sm:items-center sm:pt-0">
     <div class="fixed top-0 right-0 px-6 py-4 block font-thin">
       <a href="http://e-learning.md.chula.ac.th" target="_blank" class="text-sm text-gray-500 dark:text-gray-400 underline">MDCU E-Learning</a>
     </div>
@@ -63,7 +63,7 @@ onMounted(() => {
         <h1 class="text-6xl font-extrabold">
           <span class="text-transparent bg-clip-text bg-gradient-to-br from-emerald-300 dark:from-emerald-200 to-green-700 dark:to-green-600">Docchula</span>
           <span class="text-4xl">&ensp;</span>
-          <span class="text-gray-700 dark:text-gray-300">Video Player</span>
+          <span class="text-gray-700 dark:text-gray-200">Video Player</span>
         </h1>
       </div>
 
