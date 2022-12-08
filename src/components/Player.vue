@@ -66,7 +66,7 @@ const promptPlaybackSpeed = () => {
 </script>
 
 <template>
-  <video ref="playerEl" class="video-js vjs-default-skin w-max" controls preload="metadata">
+  <video ref="playerEl" class="video-js vjs-default-skin vjs-big-play-centered w-max" controls preload="metadata" poster="/poster.webp">
     <source :src="props.src" type="video/mp4">
     Your browser does not support the video tag.
   </video>
