@@ -1,0 +1,24 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  laravel-tests:
+    runs-on: [self-hosted, linux, x64]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+    - name: Install JS Dependencies
+      run: npm ci
+    - name: Build JS assets
+      run: npm run build
+    - name: Deploy
+      run: git -C /sites/el-player pull https://keenthekeen:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git && npm --prefix /sites/el-player install && npm --prefix /sites/el-player run build
