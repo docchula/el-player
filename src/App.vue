@@ -9,15 +9,20 @@ const processUrl = (rawInput: string | null) => {
   let input = null;
   if (rawInput && isValidHttpUrl(rawInput)) {
     // Transform URL input
+    const urlInput = new URL(rawInput);
     if (rawInput.includes('.mp4')) {
       input = rawInput;
     } else {
-      const urlInput = new URL(rawInput);
       if (rawInput.includes('aculearn-idm/')) {
         input = 'http://cdn.md.chula.ac.th/content/' + urlInput.searchParams.get('author') + '/' + urlInput.searchParams.get('modulename') + '/media/' + (rawInput.includes('/v7/') ? '2' : '1') + '.mp4';
       } else if (rawInput.includes('aculearn-me/')) {
         input = 'http://cdn1.md.chula.ac.th/content/' + urlInput.searchParams.get('author') + '/' + urlInput.searchParams.get('modulename') + '/media/' + (rawInput.includes('/v7/') ? '2' : '1') + '.mp4';
       }
+    }
+
+    if (input && input.startsWith('http:') && window.location.protocol === 'https:' && !window.location.search.includes('downgraded')) {
+      // Automatically downgrade to HTTP if the page is HTTPS
+      window.location.replace('http://' + window.location.host + window.location.pathname + '?downgraded=true&url=' + encodeURIComponent(input));
     }
   }
 
@@ -44,7 +49,10 @@ const isValidHttpUrl = (string: string) => {
   return url.protocol === "http:" || url.protocol === "https:";
 };
 onMounted(() => {
-  if (window.location.href.includes('aculearn-')) {
+  if (window.location.search.includes('url=')) {
+    const urlInput = new URL(window.location.href);
+    processUrl(urlInput.searchParams.get('url'));
+  } else if (window.location.href.includes('aculearn-')) {
     processUrl(window.location.href);
   }
 });
