@@ -71,8 +71,9 @@ onMounted(() => {
       </div>
 
       <div class="mt-20 mb-4 text-xs font-light text-gray-400 dark:text-gray-300 text-center">
-        Created with ❤ by Keen | <a href="https://github.com/docchula/el-player" target="_blank"
-                                    class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300">Source Code</a> |
+        Created with ❤ by Keen&nbsp;|&nbsp;
+        <a href="https://github.com/docchula/el-player" target="_blank" class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300">Source Code</a>&nbsp;|&nbsp;
+        <a href="http://player-v1.docchula.com" target="_blank" class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300">v1 player</a>&nbsp;|&nbsp;
         <SunIcon @click="toggleDarkMode" title="Toggle dark theme"
                  class="inline-block h-5 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"/>
       </div>
