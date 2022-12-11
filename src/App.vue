@@ -22,7 +22,7 @@ const processUrl = (rawInput: string | null) => {
 
     if (input && input.startsWith('http:') && window.location.protocol === 'https:' && !window.location.search.includes('downgraded')) {
       // Automatically downgrade to HTTP if the page is HTTPS
-      window.location.replace('http://' + window.location.host + window.location.pathname + '?downgraded=true&url=' + encodeURIComponent(input));
+      window.location.replace('http://' + window.location.host + '/?downgraded=true&url=' + encodeURIComponent(input));
     }
   }
 
