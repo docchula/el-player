@@ -59,7 +59,7 @@ onMounted(() => {
 
 <template>
   <div class="relative flex items-top justify-center min-h-screen bg-gray-50 dark:bg-transparent sm:items-center sm:pt-0">
-    <div class="fixed top-0 right-0 px-6 py-4 block font-light">
+    <div class="absolute top-0 right-0 px-6 py-4 block font-light">
       <a href="http://e-learning.md.chula.ac.th" target="_blank" class="text-sm text-gray-500 dark:text-gray-400 underline">MDCU E-Learning</a>
     </div>
 
