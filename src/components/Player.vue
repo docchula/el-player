@@ -6,10 +6,14 @@ import "video.js/dist/video-js.css";
 import 'videojs-hotkeys';
 import 'videojs-seek-buttons';
 import 'videojs-seek-buttons/dist/videojs-seek-buttons.css';
+import 'videojs-youtube';
 
 defineEmits(['back']);
 const props = defineProps<{
-  src: string;
+  source: {
+    src: string;
+    type?: string;
+  };
 }>();
 const playerEl = ref<Element | null>(null);
 let player: videojs.Player;
@@ -17,13 +21,16 @@ let startTime: number | null;
 let ticker: number | undefined;
 const startClock = ref<String | null>(null);
 onMounted(() => {
+  console.log(props.source);
   player = videojs(playerEl.value!, {
     aspectRatio: "1280:640",
     playbackRates: [0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5],
     plugins: {
       seekButtons: {forward: 10, back: 10}
-    }
+    },
+    sources: [props.source],
   }, () => {
+    player.src(props.source);
     player.hotkeys({
       volumeStep: 0.1,
       seekStep: 5,
@@ -67,7 +74,6 @@ const promptPlaybackSpeed = () => {
 
 <template>
   <video ref="playerEl" class="video-js vjs-default-skin vjs-big-play-centered w-max" controls preload="metadata">
-    <source :src="props.src" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <div class="my-4 text-gray-500 dark:text-gray-200">

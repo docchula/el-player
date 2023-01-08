@@ -4,30 +4,44 @@ import Player from './components/Player.vue';
 import {onMounted, ref} from 'vue';
 import {SunIcon} from '@heroicons/vue/20/solid';
 
-const url = ref<string | null>(null);
+const source = ref<{
+  src: string;
+  type?: string;
+} | null>(null);
 const processUrl = (rawInput: string | null) => {
-  let input = null;
+  let input: {
+    src: string;
+    type?: string;
+  } | null = null;
   if (rawInput && isValidHttpUrl(rawInput)) {
     // Transform URL input
     const urlInput = new URL(rawInput);
     if (rawInput.includes('.mp4')) {
-      input = rawInput;
+      input = {src: rawInput, type: 'video/mp4'};
     } else {
       if (rawInput.includes('aculearn-idm/')) {
-        input = 'http://cdn.md.chula.ac.th/content/' + urlInput.searchParams.get('author') + '/' + urlInput.searchParams.get('modulename') + '/media/' + (rawInput.includes('/v7/') ? '2' : '1') + '.mp4';
+        input = {src: 'http://cdn.md.chula.ac.th/content/' + urlInput.searchParams.get('author') + '/' + urlInput.searchParams.get('modulename') + '/media/' + (rawInput.includes('/v7/') ? '2' : '1') + '.mp4', type: 'video/mp4'};
       } else if (rawInput.includes('aculearn-me/')) {
-        input = 'http://cdn1.md.chula.ac.th/content/' + urlInput.searchParams.get('author') + '/' + urlInput.searchParams.get('modulename') + '/media/' + (rawInput.includes('/v7/') ? '2' : '1') + '.mp4';
+        input = {src: 'http://cdn1.md.chula.ac.th/content/' + urlInput.searchParams.get('author') + '/' + urlInput.searchParams.get('modulename') + '/media/' + (rawInput.includes('/v7/') ? '2' : '1') + '.mp4', type: 'video/mp4'};
+      } else if (rawInput.startsWith('https://drive.google.com/open?') || rawInput.startsWith('https://drive.google.com/file/')) {
+        const fileIds = rawInput.match(/\/[-\w]{25,}\//);
+        if (fileIds) {
+          input = {src: 'https://drive.google.com/uc?export=download&id=' + fileIds[0].replace(/\//g, ''), type: 'video/mp4'};
+        }
+      } else if (rawInput?.match(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/i)) {
+        // YouTube URL
+        input = {src: rawInput, type: 'video/youtube'};
       }
     }
 
-    if (input && input.startsWith('http:') && window.location.protocol === 'https:' && !window.location.search.includes('downgraded')) {
+    if (input && input.src.startsWith('http:') && window.location.protocol === 'https:' && !window.location.search.includes('downgraded')) {
       // Automatically downgrade to HTTP if the page is HTTPS
-      window.location.replace('http://' + window.location.host + '/?downgraded=true&url=' + encodeURIComponent(input));
+      window.location.replace('http://' + window.location.host + '/?downgraded=true&url=' + encodeURIComponent(input.src));
     }
   }
 
-  url.value = input;
-  if (url.value) {
+  source.value = input;
+  if (source.value) {
     document.documentElement.classList.add('dark');
   } else {
     document.documentElement.classList.remove('dark');
@@ -74,8 +88,8 @@ onMounted(() => {
       </div>
 
       <div class="mt-8">
-        <Player v-if="url" :src="url" @back="processUrl(null)"/>
-        <Home v-else :url="url" @submit="processUrl"/>
+        <Player v-if="source" :source="source" @back="processUrl(null)"/>
+        <Home v-else @submit="processUrl"/>
       </div>
 
       <div class="mt-20 mb-4 text-xs font-light text-gray-400 dark:text-gray-300 text-center">
