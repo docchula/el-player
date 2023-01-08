@@ -66,13 +66,13 @@ const promptPlaybackSpeed = () => {
 </script>
 
 <template>
-  <video ref="playerEl" class="video-js vjs-default-skin vjs-big-play-centered w-max" controls preload="metadata" poster="/poster.webp">
+  <video ref="playerEl" class="video-js vjs-default-skin vjs-big-play-centered w-max" controls preload="metadata">
     <source :src="props.src" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <div class="my-4 text-gray-500 dark:text-gray-200">
     <p class="my-2 hidden md:block text-gray-400 dark:text-gray-300"><b>Hotkeys</b>&emsp; Space: Pause, ▲/▼: Volume, ◄/►: Seek, F: Fullscreen</p>
-    <span v-if="startClock">Time spent on this page: {{ startClock }} | </span><a class="cursor-pointer" @click="promptPlaybackSpeed">Set playback speed</a>
+    <span v-if="startClock">Time spent on this page: {{ startClock }} | </span><a class="cursor-pointer text-gray-400 dark:text-gray-300" @click="promptPlaybackSpeed">Set playback speed</a>
   </div>
   <div class="tracking-wide text-center text-green-600 dark:text-red-500 mt-6">
     <a class="cursor-pointer" @click="$emit('back')">
