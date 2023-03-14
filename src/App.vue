@@ -41,9 +41,7 @@ const processUrl = (rawInput: string | null) => {
   }
 
   source.value = input;
-  if (source.value) {
-    document.documentElement.classList.add('dark');
-  } else {
+  if (!source.value) {
     if (rawInput) {
       alert('Invalid URL');
     }
