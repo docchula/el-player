@@ -3,6 +3,7 @@ import Home from './components/Home.vue';
 import Player from './components/Player.vue';
 import { onMounted, ref } from 'vue';
 import { SunIcon } from '@heroicons/vue/20/solid';
+import BookmarkModal from './components/BookmarkModal.vue';
 
 const source = ref<{
   src: string;
@@ -95,6 +96,7 @@ const processUrl = (rawInput: string | null) => {
 const toggleDarkMode = () => {
   document.documentElement.classList.toggle('dark');
 };
+const showBookmarkModal = ref(false);
 const isValidHttpUrl = (string: string) => {
   let url;
   try {
@@ -157,6 +159,13 @@ onMounted(() => {
           target="_blank"
           >Source Code</a
         >&nbsp;|&nbsp;
+        <span class="hidden md:inline">
+          <a
+            class="cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            @click="showBookmarkModal = true"
+            >Add to Bookmark</a
+          >&nbsp;|&nbsp;
+        </span>
         <a
           class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
           href="http://player-v1.docchula.com"
@@ -171,4 +180,5 @@ onMounted(() => {
       </div>
     </div>
   </div>
+  <BookmarkModal :show="showBookmarkModal" @close="showBookmarkModal = false" />
 </template>
