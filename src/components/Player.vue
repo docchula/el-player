@@ -83,7 +83,6 @@ const promptPlaybackSpeed = () => {
   <div class="tracking-wide text-center text-green-600 dark:text-red-500 mt-6">
     <a class="cursor-pointer" @click="$emit('back')">
       <ChevronLeftIcon class="inline-block h-5"/>
-      Back
-    </a>
+      Back</a>
   </div>
 </template>
