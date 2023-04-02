@@ -2,7 +2,7 @@
 import Home from './components/Home.vue';
 import Player from './components/Player.vue';
 import { onMounted, ref } from 'vue';
-import { SunIcon } from '@heroicons/vue/20/solid';
+import { SunIcon, LockClosedIcon, LockOpenIcon } from '@heroicons/vue/20/solid';
 import BookmarkModal from './components/BookmarkModal.vue';
 
 const source = ref<{
@@ -84,17 +84,33 @@ const processUrl = (rawInput: string | null) => {
   }
 
   source.value = input;
-  if (source.value) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-    if (rawInput) {
-      alert('Invalid URL');
+  if (!(lockTheme.value === 'true-dark' || lockTheme.value === 'true-light')) {
+    if (source.value) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      if (rawInput) {
+        alert('Invalid URL');
+      }
     }
   }
 };
+const storeLockTheme = localStorage.getItem('lockTheme') ?? 'false';
+const lockTheme = ref(storeLockTheme);
 const toggleDarkMode = () => {
   document.documentElement.classList.toggle('dark');
+};
+const toggleLockTheme = () => {
+  if (lockTheme.value === 'true-dark' || lockTheme.value === 'true-light') {
+    lockTheme.value = 'false';
+  } else {
+    if (document.documentElement.classList.contains('dark')) {
+      lockTheme.value = 'true-dark';
+    } else {
+      lockTheme.value = 'true-light';
+    }
+  }
+  localStorage.setItem('lockTheme', lockTheme.value);
 };
 const showBookmarkModal = ref(false);
 const isValidHttpUrl = (string: string) => {
@@ -112,6 +128,16 @@ onMounted(() => {
     processUrl(urlInput.searchParams.get('url'));
   } else if (window.location.href.includes('aculearn-')) {
     processUrl(window.location.href);
+  }
+  if (lockTheme.value === 'true-dark') {
+    document.documentElement.classList.add('dark');
+    console.log('added');
+  } else if (lockTheme.value === 'true-light') {
+    document.documentElement.classList.remove('dark');
+    console.log('not added');
+  } else {
+    console.log('nothing work');
+    console.log(localStorage.getItem('lockTheme'));
   }
 });
 </script>
@@ -176,6 +202,18 @@ onMounted(() => {
           class="inline-block h-5 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
           title="Toggle dark theme"
           @click="toggleDarkMode"
+        />&nbsp;|&nbsp;
+        <LockClosedIcon
+          v-if="lockTheme !== 'false'"
+          class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+          title="Toggle dark theme"
+          @click="toggleLockTheme"
+        />
+        <LockOpenIcon
+          v-else
+          class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+          title="Toggle dark theme"
+          @click="toggleLockTheme"
         />
       </div>
     </div>
