@@ -131,13 +131,8 @@ onMounted(() => {
   }
   if (lockTheme.value === 'true-dark') {
     document.documentElement.classList.add('dark');
-    console.log('added');
   } else if (lockTheme.value === 'true-light') {
     document.documentElement.classList.remove('dark');
-    console.log('not added');
-  } else {
-    console.log('nothing work');
-    console.log(localStorage.getItem('lockTheme'));
   }
 });
 </script>
