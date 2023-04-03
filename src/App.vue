@@ -93,6 +93,12 @@ const processUrl = (rawInput: string | null) => {
         alert('Invalid URL');
       }
     }
+  } else {
+    if (!source.value) {
+      if (rawInput) {
+        alert('Invalid URL');
+      }
+    }
   }
 };
 const storeLockTheme = localStorage.getItem('lockTheme') ?? 'false';
