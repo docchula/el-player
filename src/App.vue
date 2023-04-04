@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import Home from './components/Home.vue';
 import Player from './components/Player.vue';
-import { onMounted, ref } from 'vue';
-import { SunIcon } from '@heroicons/vue/20/solid';
+import {onMounted, ref} from 'vue';
+import {LockClosedIcon, LockOpenIcon, SunIcon} from '@heroicons/vue/20/solid';
 import BookmarkModal from './components/BookmarkModal.vue';
 
 const source = ref<{
@@ -84,17 +84,42 @@ const processUrl = (rawInput: string | null) => {
   }
 
   source.value = input;
-  if (source.value) {
-    document.documentElement.classList.add('dark');
+  if (!(lockTheme.value === 'true-dark' || lockTheme.value === 'true-light')) {
+    if (source.value) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      if (rawInput) {
+        alert('Invalid URL');
+      }
+    }
   } else {
-    document.documentElement.classList.remove('dark');
-    if (rawInput) {
-      alert('Invalid URL');
+    if (!source.value) {
+      if (rawInput) {
+        alert('Invalid URL');
+      }
     }
   }
 };
+const lockTheme = ref(localStorage.getItem('lockTheme') ?? 'false');
 const toggleDarkMode = () => {
   document.documentElement.classList.toggle('dark');
+  if (lockTheme.value === 'true-dark' || lockTheme.value === 'true-light') {
+    lockTheme.value = document.documentElement.classList.contains('dark') ? 'true-dark' : 'true-light';
+    localStorage.setItem('lockTheme', lockTheme.value);
+  }
+};
+const toggleLockTheme = () => {
+  if (lockTheme.value === 'true-dark' || lockTheme.value === 'true-light') {
+    lockTheme.value = 'false';
+  } else {
+    if (document.documentElement.classList.contains('dark')) {
+      lockTheme.value = 'true-dark';
+    } else {
+      lockTheme.value = 'true-light';
+    }
+  }
+  localStorage.setItem('lockTheme', lockTheme.value);
 };
 const showBookmarkModal = ref(false);
 const isValidHttpUrl = (string: string) => {
@@ -112,6 +137,11 @@ onMounted(() => {
     processUrl(urlInput.searchParams.get('url'));
   } else if (window.location.href.includes('aculearn-')) {
     processUrl(window.location.href);
+  }
+  if (lockTheme.value === 'true-dark') {
+    document.documentElement.classList.add('dark');
+  } else if (lockTheme.value === 'true-light') {
+    document.documentElement.classList.remove('dark');
   }
 });
 </script>
@@ -163,19 +193,31 @@ onMounted(() => {
           <a
             class="cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
             @click="showBookmarkModal = true"
-            >Add to Bookmark</a
+          >Add to Bookmark</a
           >&nbsp;|&nbsp;
         </span>
         <a
-          class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-          href="http://player-v1.docchula.com"
-          target="_blank"
-          >v1 player</a
+            class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            href="http://player-v1.docchula.com"
+            target="_blank"
+        >v1 player</a
         >&nbsp;|&nbsp;
         <SunIcon
-          class="inline-block h-5 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-          title="Toggle dark theme"
-          @click="toggleDarkMode"
+            class="inline-block h-5 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            title="Toggle dark theme"
+            @click="toggleDarkMode"
+        />&nbsp;
+        <LockOpenIcon
+            v-if="lockTheme === 'false'"
+            class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            title="Enable theme lock"
+            @click="toggleLockTheme"
+        />
+        <LockClosedIcon
+            v-else
+            class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            title="Disable dark theme"
+            @click="toggleLockTheme"
         />
       </div>
     </div>
