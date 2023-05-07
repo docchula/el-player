@@ -2,11 +2,11 @@ name: Build & Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   laravel-tests:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: [ self-hosted, linux, x64 ]
 
     steps:
       - uses: actions/checkout@v2
@@ -15,8 +15,8 @@ jobs:
         with:
           node-version: 16.x
       - name: Install JS Dependencies
-        run: npm ci
+        run: pnpm install
       - name: Build JS assets
-        run: npm run build
+        run: pnpm run build
       - name: Deploy
-        run: git -C /sites/el-player pull https://keenthekeen:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git && npm --prefix /sites/el-player install && npm --prefix /sites/el-player run build
+        run: git -C /sites/el-player pull https://keenthekeen:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git && pnpm --prefix /sites/el-player install && pnpm --prefix /sites/el-player run build
