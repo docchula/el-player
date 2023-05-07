@@ -4,8 +4,6 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import 'videojs-hotkeys';
-import 'videojs-seek-buttons';
-import 'videojs-seek-buttons/dist/videojs-seek-buttons.css';
 import 'videojs-youtube';
 
 defineEmits(['back']);
@@ -26,10 +24,13 @@ onMounted(() => {
     playerEl.value!,
     {
       aspectRatio: '1280:640',
-      playbackRates: [0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5],
-      plugins: {
-        seekButtons: { forward: 10, back: 10 },
+      controlBar: {
+        skipButtons: {
+          forward: 10,
+          backward: 10,
+        },
       },
+      playbackRates: [0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5],
       sources: [props.source],
     },
     () => {
