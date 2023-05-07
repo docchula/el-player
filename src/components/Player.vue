@@ -14,7 +14,7 @@ const props = defineProps<{
   };
 }>();
 const playerEl = ref<Element | null>(null);
-let player: videojs.Player;
+let player: any;
 let startTime: number | null;
 let ticker: number | undefined;
 const startClock = ref<String | null>(null);
