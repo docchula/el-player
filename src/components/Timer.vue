@@ -6,7 +6,7 @@ export default {
     return {
       studyDuration: 25,
       breakDuration: 5,
-      longBreakDuration: 15,
+      longBreakDuration: 20,
       isTimerRunning: false,
       open: false,
       timeLeft: 0,
