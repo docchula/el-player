@@ -117,7 +117,7 @@ export default {
         <div>
           <label class="label">Study Duration (minutes)</label>
           <input
-            class="block rounded-md border-gray-300 focus:border-green-400 transition duration-500 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
+            class="block w-full rounded-md border-gray-300 focus:border-green-400 transition duration-500 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
             type="number"
             min="1"
             placeholder="25"
@@ -128,7 +128,7 @@ export default {
         <div>
           <label class="label">Break Duration (minutes)</label>
           <input
-            class="block rounded-md border-gray-300 focus:border-green-400 transition duration-500 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
+            class="block w-full rounded-md border-gray-300 focus:border-green-400 transition duration-500 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
             type="number"
             min="1"
             placeholder="5"
@@ -139,7 +139,7 @@ export default {
         <div>
           <label class="label">Long Break Duration (minutes)</label>
           <input
-            class="block rounded-md border-gray-300 focus:border-green-400 transition duration-500 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
+            class="block w-full rounded-md border-gray-300 focus:border-green-400 transition duration-500 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
             type="number"
             min="1"
             placeholder="15"
