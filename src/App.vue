@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import Home from './components/Home.vue';
 import Player from './components/Player.vue';
-import {onMounted, ref} from 'vue';
-import {LockClosedIcon, LockOpenIcon, SunIcon} from '@heroicons/vue/20/solid';
+import Timer from './components/Timer.vue';
+import { onMounted, ref } from 'vue';
+import { LockClosedIcon, LockOpenIcon, SunIcon } from '@heroicons/vue/20/solid';
 import BookmarkModal from './components/BookmarkModal.vue';
 
 const source = ref<{
@@ -105,7 +106,9 @@ const lockTheme = ref(localStorage.getItem('lockTheme') ?? 'false');
 const toggleDarkMode = () => {
   document.documentElement.classList.toggle('dark');
   if (lockTheme.value === 'true-dark' || lockTheme.value === 'true-light') {
-    lockTheme.value = document.documentElement.classList.contains('dark') ? 'true-dark' : 'true-light';
+    lockTheme.value = document.documentElement.classList.contains('dark')
+      ? 'true-dark'
+      : 'true-light';
     localStorage.setItem('lockTheme', lockTheme.value);
   }
 };
@@ -158,7 +161,9 @@ onMounted(() => {
         >MDCU E-Learning</a
       >
     </div>
-
+    <div class="absolute top-0 left-0 px-6 py-4 block">
+      <Timer />
+    </div>
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-0">
       <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
         <h1 class="text-6xl font-extrabold md:px-4 lg:px-12">
@@ -193,31 +198,31 @@ onMounted(() => {
           <a
             class="cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
             @click="showBookmarkModal = true"
-          >Add to Bookmark</a
+            >Add to Bookmark</a
           >&nbsp;|&nbsp;
         </span>
         <a
-            class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-            href="http://player-v1.docchula.com"
-            target="_blank"
-        >v1 player</a
+          class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+          href="http://player-v1.docchula.com"
+          target="_blank"
+          >v1 player</a
         >&nbsp;|&nbsp;
         <SunIcon
-            class="inline-block h-5 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-            title="Toggle dark theme"
-            @click="toggleDarkMode"
+          class="inline-block h-5 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+          title="Toggle dark theme"
+          @click="toggleDarkMode"
         />&nbsp;
         <LockOpenIcon
-            v-if="lockTheme === 'false'"
-            class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-            title="Enable theme lock"
-            @click="toggleLockTheme"
+          v-if="lockTheme === 'false'"
+          class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+          title="Enable theme lock"
+          @click="toggleLockTheme"
         />
         <LockClosedIcon
-            v-else
-            class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-            title="Disable dark theme"
-            @click="toggleLockTheme"
+          v-else
+          class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+          title="Disable dark theme"
+          @click="toggleLockTheme"
         />
       </div>
     </div>
