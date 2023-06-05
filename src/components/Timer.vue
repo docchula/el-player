@@ -15,6 +15,9 @@ const isOpen = ref(false);
 const timeLeft = ref<number>(0);
 
 const startTimer = () => {
+  if (settings.isTimerRunning) {
+    return;
+  }
   if (settings.studyDuration >= 1 && settings.breakDuration >= 1) {
     if (settings.count === 0) {
       settings.title = 'Study';
