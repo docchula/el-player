@@ -111,39 +111,51 @@ const formatTime = (time: number) => {
           />
         </div>
       </div>
-      <div class="space-y-1">
+      <div class="space-y-1 sm:space-y-2">
         <div>
-          <label class="label">Study Duration (minutes)</label>
-          <input
-            v-model.number="settings.studyDuration"
-            class="block w-full rounded-md border-gray-300 focus:border-green-400 transition duration-500 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
-            min="1"
-            onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
-            placeholder="25"
-            type="number"
-          />
+          <label for="input-study">Study Duration</label>
+          <div class="flex items-center gap-2">
+            <input
+              id="input-study"
+              v-model.number="settings.studyDuration"
+              class="block rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              min="1"
+              onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
+              placeholder="25"
+              type="number"
+            />
+            <p>min</p>
+          </div>
         </div>
         <div>
-          <label class="label">Break Duration (minutes)</label>
-          <input
-            v-model.number="settings.breakDuration"
-            class="block w-full rounded-md border-gray-300 focus:border-green-400 transition duration-500 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
-            min="1"
-            onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
-            placeholder="5"
-            type="number"
-          />
+          <label for="input-break">Break Duration</label>
+          <div class="flex items-center gap-2">
+            <input
+              id="input-break"
+              v-model.number="settings.breakDuration"
+              class="block rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              min="1"
+              onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
+              placeholder="5"
+              type="number"
+            />
+            <p>min</p>
+          </div>
         </div>
         <div>
-          <label class="label">Long Break Duration (minutes)</label>
-          <input
-            v-model.number="settings.longBreakDuration"
-            class="block w-full rounded-md border-gray-300 focus:border-green-400 transition duration-500 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
-            min="1"
-            onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
-            placeholder="15"
-            type="number"
-          />
+          <label for="input-long-break">Long Break Duration</label>
+          <div class="flex items-center gap-2">
+            <input
+              id="input-long-break"
+              v-model.number="settings.longBreakDuration"
+              class="block rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              min="1"
+              onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
+              placeholder="15"
+              type="number"
+            />
+            <p>min</p>
+          </div>
         </div>
       </div>
     </div>
