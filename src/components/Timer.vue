@@ -2,9 +2,9 @@
 import {
   ArrowPathIcon,
   ChevronDownIcon,
+  PauseIcon,
   PlayIcon,
   QuestionMarkCircleIcon,
-  StopIcon,
 } from '@heroicons/vue/24/solid';
 import { reactive, ref } from 'vue';
 
@@ -12,7 +12,6 @@ const settings = reactive({
   studyDuration: 25,
   breakDuration: 5,
   longBreakDuration: 20,
-  isTimerRunning: false,
   timerId: 0,
   count: 0,
   title: 'Timer',
@@ -21,63 +20,75 @@ const isOpen = ref(false);
 const timeLeft = ref<number>(0);
 
 const startTimer = () => {
-  if (settings.isTimerRunning) {
+  if (settings.timerId !== 0) {
+    // If timer is already running, pause it.
+    stopTimer();
     return;
   }
-  if (settings.studyDuration >= 1 && settings.breakDuration >= 1) {
-    if (settings.count === 0) {
-      settings.title = 'Study';
-      settings.count++;
-    }
-    settings.isTimerRunning = true;
+  if (settings.studyDuration < 0.2 || settings.breakDuration < 0.2) {
+    alert('Please provide durations that are at least 1 minute.');
+  }
+  if (settings.count === 0) {
+    settings.title = 'Study';
+    settings.count++;
+  }
+  if (timeLeft.value <= 0) {
     timeLeft.value =
       settings.count % 2 === 0
         ? settings.count % 3 === 0
           ? settings.longBreakDuration * 60
           : settings.breakDuration * 60
         : settings.studyDuration * 60;
-    settings.timerId = setInterval(() => {
-      if (timeLeft.value > 0) {
-        timeLeft.value--;
-      } else {
-        stopTimer();
-        settings.count++;
-        if (settings.count % 2 === 0) {
-          if (settings.count % 3 === 0) {
-            startTimer();
-            settings.title = 'Long Break';
-            alert('Study time is up! Take a long break.');
-          } else {
-            startTimer();
-            settings.title = 'Break';
-            alert('Study time is up! Take a break.');
-          }
+  }
+  settings.timerId = setInterval(() => {
+    if (timeLeft.value > 0) {
+      timeLeft.value--;
+    } else {
+      stopTimer();
+      settings.count++;
+      if (settings.count % 2 === 0) {
+        if (settings.count % 3 === 0) {
+          startTimer();
+          settings.title = 'Long Break';
+          alert('Study time is up! Take a long break.');
         } else {
           startTimer();
-          settings.title = 'Study';
-          alert('Break time is up! Get back to study.');
+          settings.title = 'Break';
+          alert('Study time is up! Take a break.');
         }
+      } else {
+        startTimer();
+        settings.title = 'Study';
+        alert('Break time is up! Get back to study.');
       }
-    }, 1000);
-  } else {
-    alert('Please provide durations that are at least 1 minute.');
-  }
+    }
+  }, 1000);
 };
 
 const stopTimer = () => {
-  settings.isTimerRunning = false;
   clearInterval(settings.timerId);
+  settings.timerId = 0;
 };
 
 const resetTimer = () => {
-  stopTimer();
-  timeLeft.value = 0;
+  if (confirm('Do you want to reset the timer?')) {
+    stopTimer();
+    timeLeft.value = 0;
+    settings.count = 0;
+    settings.title = 'Timer';
+  }
 };
 
 const formatTime = (time: number) => {
   const displayTime = new Date(0, 0);
   displayTime.setSeconds(+time);
   return displayTime.toTimeString().slice(0, 8);
+};
+
+const enforceNumberOnly = (event: KeyboardEvent) => {
+  if (!((event.key >= '0' && event.key <= '9') || event.key === '.')) {
+    event.preventDefault();
+  }
 };
 </script>
 
@@ -95,7 +106,8 @@ const formatTime = (time: number) => {
       <ChevronDownIcon v-if="isOpen" class="inline-block h-5" />
     </template>
     <template v-else>
-      {{ settings.title }}: {{ formatTime(timeLeft) }}
+      {{ settings.title }}:
+      <span class="font-bold">{{ formatTime(timeLeft) }}</span>
     </template>
   </button>
   <transition
@@ -127,15 +139,15 @@ const formatTime = (time: number) => {
           {{ formatTime(timeLeft) }}
         </div>
         <div class="buttons">
-          <PlayIcon
-            class="inline-block h-7 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
+          <a
+            class="cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
             @click="startTimer"
-          />
-          <StopIcon
-            class="inline-block h-7 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
-            @click="stopTimer"
-          />
+          >
+            <PlayIcon v-if="settings.timerId === 0" class="inline-block h-7" />
+            <PauseIcon v-else class="inline-block h-7" />
+          </a>
           <ArrowPathIcon
+            v-if="timeLeft > 0 || settings.count > 0"
             class="inline-block h-6 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
             @click="resetTimer"
           />
@@ -151,9 +163,9 @@ const formatTime = (time: number) => {
               class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
               max="360"
               min="1"
-              onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
               placeholder="25"
               type="number"
+              v-on:keypress="enforceNumberOnly"
             />
             <p>min</p>
           </div>
@@ -167,9 +179,9 @@ const formatTime = (time: number) => {
               class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
               max="360"
               min="1"
-              onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
               placeholder="5"
               type="number"
+              v-on:keypress="enforceNumberOnly"
             />
             <p>min</p>
           </div>
@@ -183,9 +195,9 @@ const formatTime = (time: number) => {
               class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
               max="360"
               min="1"
-              onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
               placeholder="15"
               type="number"
+              v-on:keypress="enforceNumberOnly"
             />
             <p>min</p>
           </div>
