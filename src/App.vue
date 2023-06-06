@@ -161,10 +161,10 @@ onMounted(() => {
         >MDCU E-Learning</a
       >
     </div>
-    <div class="absolute top-0 left-0 px-6 py-4 block">
+    <div class="absolute top-0 left-0 px-6 py-4 block z-40">
       <Timer />
     </div>
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-10 md:mt-12">
       <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
         <h1 class="text-6xl font-extrabold md:px-4 lg:px-12">
           <span

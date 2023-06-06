@@ -1,5 +1,11 @@
 <script lang="ts" setup>
-import { ArrowPathIcon, PlayIcon, StopIcon } from '@heroicons/vue/24/solid';
+import {
+  ArrowPathIcon,
+  ChevronDownIcon,
+  PlayIcon,
+  QuestionMarkCircleIcon,
+  StopIcon,
+} from '@heroicons/vue/24/solid';
 import { reactive, ref } from 'vue';
 
 const settings = reactive({
@@ -77,10 +83,20 @@ const formatTime = (time: number) => {
 
 <template>
   <button
-    class="cursor-pointer relative text-sm text-gray-500 dark:text-gray-400 block"
+    :class="{
+      'text-gray-600 dark:text-gray-300': isOpen || timeLeft > 0,
+      'text-gray-400 dark:text-gray-500': !isOpen && timeLeft <= 0,
+    }"
+    class="cursor-pointer relative text-sm block"
     @click="isOpen = !isOpen"
   >
-    Pomodoro Timer
+    <template v-if="isOpen || timeLeft <= 0">
+      Pomodoro Timer
+      <ChevronDownIcon v-if="isOpen" class="inline-block h-5" />
+    </template>
+    <template v-else>
+      {{ settings.title }}: {{ formatTime(timeLeft) }}
+    </template>
   </button>
   <transition
     enter-active-class="ease-out duration-300"
@@ -92,11 +108,22 @@ const formatTime = (time: number) => {
   >
     <div
       v-if="isOpen"
-      class="box-border p-4 mt-2 rounded-lg bg-gray-200 transition duration-1000 dark:bg-gray-800 block text-sm text-gray-700 dark:text-gray-500"
+      class="box-border p-4 mt-2 rounded-lg bg-gray-200/50 backdrop-blur transition duration-1000 dark:bg-gray-700/50 block text-sm text-gray-700 dark:text-gray-500"
     >
       <div class="text-center">
-        <h2 class="text-lg font-bold">{{ settings.title }}</h2>
-        <div class="text-xl">
+        <h2 class="text-lg font-bold dark:text-gray-400">
+          {{ settings.title }}
+          <a
+            v-if="timeLeft === 0"
+            href="https://en.wikipedia.org/wiki/Pomodoro_Technique"
+            target="_blank"
+          >
+            <QuestionMarkCircleIcon
+              class="inline-block h-5 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
+            />
+          </a>
+        </h2>
+        <div class="text-xl dark:text-gray-400">
           {{ formatTime(timeLeft) }}
         </div>
         <div class="buttons">
@@ -114,14 +141,15 @@ const formatTime = (time: number) => {
           />
         </div>
       </div>
-      <div class="space-y-1 sm:space-y-2">
+      <div class="space-y-1 sm:space-y-2 mt-2">
         <div>
           <label for="input-study">Study Duration</label>
           <div class="flex items-center gap-2">
             <input
               id="input-study"
               v-model.number="settings.studyDuration"
-              class="block rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              max="360"
               min="1"
               onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
               placeholder="25"
@@ -136,7 +164,8 @@ const formatTime = (time: number) => {
             <input
               id="input-break"
               v-model.number="settings.breakDuration"
-              class="block rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              max="360"
               min="1"
               onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
               placeholder="5"
@@ -151,7 +180,8 @@ const formatTime = (time: number) => {
             <input
               id="input-long-break"
               v-model.number="settings.longBreakDuration"
-              class="block rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              max="360"
               min="1"
               onkeypress="return (event.key >= '0' && event.key <= '9') || event.key === '.'"
               placeholder="15"
