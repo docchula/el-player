@@ -2,6 +2,7 @@
 import {
   ArrowPathIcon,
   ChevronDownIcon,
+  ForwardIcon,
   PauseIcon,
   PlayIcon,
   QuestionMarkCircleIcon,
@@ -92,6 +93,13 @@ const resetTimer = () => {
   }
 };
 
+const forwardTimer = () => {
+  if (timer.left > 5 && confirm('Do you want to skip this session?')) {
+    timer.left = 5;
+    timer.from = 6;
+  }
+};
+
 const formatTime = (time: number) => {
   const displayTime = new Date(0, 0);
   displayTime.setSeconds(+time);
@@ -153,15 +161,20 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
         </div>
         <div class="buttons">
           <a
-            class="cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
+            class="mx-1 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
             @click="startTimer"
           >
             <PlayIcon v-if="timer.timerId === 0" class="inline-block h-7" />
             <PauseIcon v-else class="inline-block h-7" />
           </a>
+          <ForwardIcon
+            v-if="timer.left > 8"
+            class="inline-block h-6 mx-1 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
+            @click="forwardTimer"
+          />
           <ArrowPathIcon
             v-if="timer.left > 0 || timer.count > 0"
-            class="inline-block h-6 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
+            class="inline-block h-6 mx-1 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
             @click="resetTimer"
           />
         </div>
