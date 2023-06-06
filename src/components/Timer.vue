@@ -6,21 +6,30 @@ import {
   PlayIcon,
   QuestionMarkCircleIcon,
 } from '@heroicons/vue/24/solid';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 
 const settings = reactive({
   studyDuration: 25,
   breakDuration: 5,
   longBreakDuration: 20,
+});
+const isOpen = ref(false);
+const timer = reactive({
+  left: 0,
+  from: 0,
   timerId: 0,
   count: 0,
   title: 'Timer',
 });
-const isOpen = ref(false);
-const timeLeft = ref<number>(0);
+const timerPercentage = computed(() => {
+  if (timer.left <= 0 || timer.from <= 0) {
+    return '0%';
+  }
+  return 100 - (timer.left * 100) / timer.from + '%';
+});
 
 const startTimer = () => {
-  if (settings.timerId !== 0) {
+  if (timer.timerId !== 0) {
     // If timer is already running, pause it.
     stopTimer();
     return;
@@ -28,37 +37,41 @@ const startTimer = () => {
   if (settings.studyDuration < 0.2 || settings.breakDuration < 0.2) {
     alert('Please provide durations that are at least 1 minute.');
   }
-  if (settings.count === 0) {
-    settings.title = 'Study';
-    settings.count++;
+  if (timer.count === 0) {
+    timer.title = 'Study';
+    timer.count++;
   }
-  if (timeLeft.value <= 0) {
-    timeLeft.value =
-      settings.count % 2 === 0
-        ? settings.count % 3 === 0
-          ? settings.longBreakDuration * 60
-          : settings.breakDuration * 60
-        : settings.studyDuration * 60;
+  if (timer.left <= 0) {
+    if (timer.count % 2 === 0) {
+      if (timer.count % 3 === 0) {
+        timer.from = settings.longBreakDuration * 60;
+      } else {
+        timer.from = settings.breakDuration * 60;
+      }
+    } else {
+      timer.from = settings.studyDuration * 60;
+    }
+    timer.left = timer.from;
   }
-  settings.timerId = setInterval(() => {
-    if (timeLeft.value > 0) {
-      timeLeft.value--;
+  timer.timerId = setInterval(() => {
+    if (timer.left > 0) {
+      timer.left--;
     } else {
       stopTimer();
-      settings.count++;
-      if (settings.count % 2 === 0) {
-        if (settings.count % 3 === 0) {
+      timer.count++;
+      if (timer.count % 2 === 0) {
+        if (timer.count % 3 === 0) {
           startTimer();
-          settings.title = 'Long Break';
+          timer.title = 'Long Break';
           alert('Study time is up! Take a long break.');
         } else {
           startTimer();
-          settings.title = 'Break';
+          timer.title = 'Break';
           alert('Study time is up! Take a break.');
         }
       } else {
         startTimer();
-        settings.title = 'Study';
+        timer.title = 'Study';
         alert('Break time is up! Get back to study.');
       }
     }
@@ -66,16 +79,16 @@ const startTimer = () => {
 };
 
 const stopTimer = () => {
-  clearInterval(settings.timerId);
-  settings.timerId = 0;
+  clearInterval(timer.timerId);
+  timer.timerId = 0;
 };
 
 const resetTimer = () => {
   if (confirm('Do you want to reset the timer?')) {
     stopTimer();
-    timeLeft.value = 0;
-    settings.count = 0;
-    settings.title = 'Timer';
+    timer.left = 0;
+    timer.count = 0;
+    timer.title = 'Timer';
   }
 };
 
@@ -95,19 +108,19 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
 <template>
   <button
     :class="{
-      'text-gray-600 dark:text-gray-300': isOpen || timeLeft > 0,
-      'text-gray-400 dark:text-gray-500': !isOpen && timeLeft <= 0,
+      'text-gray-600 dark:text-gray-300': isOpen || timer.left > 0,
+      'text-gray-400 dark:text-gray-500': !isOpen && timer.left <= 0,
     }"
     class="cursor-pointer relative text-sm block"
     @click="isOpen = !isOpen"
   >
-    <template v-if="isOpen || timeLeft <= 0">
+    <template v-if="isOpen || timer.left <= 0">
       Pomodoro Timer
       <ChevronDownIcon v-if="isOpen" class="inline-block h-5" />
     </template>
     <template v-else>
-      {{ settings.title }}:
-      <span class="font-bold">{{ formatTime(timeLeft) }}</span>
+      {{ timer.title }}:
+      <span class="font-bold">{{ formatTime(timer.left) }}</span>
     </template>
   </button>
   <transition
@@ -124,9 +137,9 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
     >
       <div class="text-center">
         <h2 class="text-lg font-bold dark:text-gray-400">
-          {{ settings.title }}
+          {{ timer.title }}
           <a
-            v-if="timeLeft === 0"
+            v-if="timer.left === 0"
             href="https://en.wikipedia.org/wiki/Pomodoro_Technique"
             target="_blank"
           >
@@ -136,18 +149,18 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
           </a>
         </h2>
         <div class="text-xl dark:text-gray-400">
-          {{ formatTime(timeLeft) }}
+          {{ formatTime(timer.left) }}
         </div>
         <div class="buttons">
           <a
             class="cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
             @click="startTimer"
           >
-            <PlayIcon v-if="settings.timerId === 0" class="inline-block h-7" />
+            <PlayIcon v-if="timer.timerId === 0" class="inline-block h-7" />
             <PauseIcon v-else class="inline-block h-7" />
           </a>
           <ArrowPathIcon
-            v-if="timeLeft > 0 || settings.count > 0"
+            v-if="timer.left > 0 || timer.count > 0"
             class="inline-block h-6 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
             @click="resetTimer"
           />
@@ -205,4 +218,15 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
       </div>
     </div>
   </transition>
+  <div class="absolute top-0 left-0 w-screen h-1.5">
+    <div
+      :class="{
+        'bg-green-400 dark:bg-green-700': timer.title === 'Study',
+        'bg-gray-400 dark:bg-gray-700': timer.title === 'Break',
+        'bg-pink-400 dark:bg-pink-700': timer.title === 'Long Break',
+      }"
+      :style="{ width: timerPercentage }"
+      class="h-full"
+    ></div>
+  </div>
 </template>
