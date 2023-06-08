@@ -2,69 +2,83 @@
 import Home from './components/Home.vue';
 import Player from './components/Player.vue';
 import Timer from './components/Timer.vue';
-import { onMounted, ref } from 'vue';
-import { LockClosedIcon, LockOpenIcon, SunIcon } from '@heroicons/vue/20/solid';
+import { computed, onMounted, ref } from 'vue';
+import {
+  LockClosedIcon,
+  LockOpenIcon,
+  PlayIcon,
+  SunIcon,
+  TrashIcon,
+  XMarkIcon,
+} from '@heroicons/vue/20/solid';
 import BookmarkModal from './components/BookmarkModal.vue';
 
 const source = ref<{
   src: string;
   type?: string;
+  currentTime?: number;
 } | null>(null);
-const processUrl = (rawInput: string | null) => {
+const processUrl = (rawInput: string | { src: string } | null) => {
   let input: {
     src: string;
     type?: string;
+    currentTime?: number;
   } | null = null;
-  if (rawInput && isValidHttpUrl(rawInput)) {
-    // Transform URL input
-    const urlInput = new URL(rawInput);
-    if (rawInput.includes('.mp4')) {
-      input = { src: rawInput, type: 'video/mp4' };
+  console.log(rawInput);
+  if (rawInput && (typeof rawInput === 'object' || isValidHttpUrl(rawInput))) {
+    if (typeof rawInput === 'object') {
+      input = rawInput;
     } else {
-      if (rawInput.includes('aculearn-idm/')) {
-        input = {
-          src:
-            'http://cdn.md.chula.ac.th/content/' +
-            urlInput.searchParams.get('author') +
-            '/' +
-            urlInput.searchParams.get('modulename') +
-            '/media/' +
-            (rawInput.includes('/v7/') ? '2' : '1') +
-            '.mp4',
-          type: 'video/mp4',
-        };
-      } else if (rawInput.includes('aculearn-me/')) {
-        input = {
-          src:
-            'http://cdn1.md.chula.ac.th/content/' +
-            urlInput.searchParams.get('author') +
-            '/' +
-            urlInput.searchParams.get('modulename') +
-            '/media/' +
-            (rawInput.includes('/v7/') ? '2' : '1') +
-            '.mp4',
-          type: 'video/mp4',
-        };
-      } else if (
-        rawInput.startsWith('https://drive.google.com/open?') ||
-        rawInput.startsWith('https://drive.google.com/file/')
-      ) {
-        const fileIds = rawInput.match(/\/[-\w]{25,}\//);
-        if (fileIds) {
+      // Transform URL input
+      const urlInput = new URL(rawInput);
+      if (rawInput.includes('.mp4')) {
+        input = { src: rawInput, type: 'video/mp4' };
+      } else {
+        if (rawInput.includes('aculearn-idm/')) {
           input = {
             src:
-              'https://drive.google.com/uc?export=download&id=' +
-              fileIds[0].replace(/\//g, ''),
+              'http://cdn.md.chula.ac.th/content/' +
+              urlInput.searchParams.get('author') +
+              '/' +
+              urlInput.searchParams.get('modulename') +
+              '/media/' +
+              (rawInput.includes('/v7/') ? '2' : '1') +
+              '.mp4',
             type: 'video/mp4',
           };
+        } else if (rawInput.includes('aculearn-me/')) {
+          input = {
+            src:
+              'http://cdn1.md.chula.ac.th/content/' +
+              urlInput.searchParams.get('author') +
+              '/' +
+              urlInput.searchParams.get('modulename') +
+              '/media/' +
+              (rawInput.includes('/v7/') ? '2' : '1') +
+              '.mp4',
+            type: 'video/mp4',
+          };
+        } else if (
+          rawInput.startsWith('https://drive.google.com/open?') ||
+          rawInput.startsWith('https://drive.google.com/file/')
+        ) {
+          const fileIds = rawInput.match(/\/[-\w]{25,}\//);
+          if (fileIds) {
+            input = {
+              src:
+                'https://drive.google.com/uc?export=download&id=' +
+                fileIds[0].replace(/\//g, ''),
+              type: 'video/mp4',
+            };
+          }
+        } else if (
+          rawInput?.match(
+            /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/i
+          )
+        ) {
+          // YouTube URL
+          input = { src: rawInput, type: 'video/youtube' };
         }
-      } else if (
-        rawInput?.match(
-          /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/i
-        )
-      ) {
-        // YouTube URL
-        input = { src: rawInput, type: 'video/youtube' };
       }
     }
 
@@ -134,6 +148,31 @@ const isValidHttpUrl = (string: string) => {
   }
   return url.protocol === 'http:' || url.protocol === 'https:';
 };
+const savedProgress = computed(() => {
+  const progressString = localStorage.getItem('ProgressSave-v1');
+  if (progressString && localStorage.getItem('isProgressSaveEnabled')) {
+    const progress = JSON.parse(progressString);
+    // ignore if the source is the same as the current source and no progress
+    if (
+      progress.src === source.value?.src &&
+      (progress.currentTime <= 120 ||
+        (source.value?.currentTime &&
+          progress.currentTime <= source.value?.currentTime))
+    ) {
+      return null;
+    }
+    return progress;
+  }
+  return null;
+});
+const progressPlay = () => {
+  processUrl(savedProgress.value);
+};
+const progressDelete = () => {
+  localStorage.removeItem('ProgressSave-v1');
+  hideProgress.value = true;
+};
+const hideProgress = ref<boolean>(false);
 onMounted(() => {
   if (window.location.search.includes('url=')) {
     const urlInput = new URL(window.location.href);
@@ -180,6 +219,38 @@ onMounted(() => {
       </div>
 
       <div class="mt-8">
+        <div
+          v-if="savedProgress && !hideProgress"
+          class="flex gap-4 rounded p-3 mb-4 text-sm bg-gray-200 dark:bg-gray-700 items-center"
+        >
+          <div class="flex-auto dark:text-gray-200">
+            <p class="text-xs font-bold text-gray-500 dark:text-gray-400">
+              SAVED PROGRESS
+            </p>
+            Do you want to continue watching
+            {{ savedProgress.src.split('?').shift().split('/').pop() }}? ({{
+              Math.round(savedProgress.currentTime / 60)
+            }}
+            min/{{ Math.round(savedProgress.duration / 60) }} min)
+          </div>
+          <div class="text-center text-gray-500 dark:text-gray-400">
+            <PlayIcon
+              class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+              @click="progressPlay"
+            />
+            <!-- ArrowTopRightOnSquareIcon
+              class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+            / -->
+            <TrashIcon
+              class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+              @click="progressDelete"
+            />
+            <XMarkIcon
+              class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+              @click="hideProgress = true"
+            />
+          </div>
+        </div>
         <Player v-if="source" :source="source" @back="processUrl(null)" />
         <Home v-else @submit="processUrl" />
       </div>

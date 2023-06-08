@@ -1,16 +1,19 @@
 <script lang="ts" setup>
 import { ChevronLeftIcon } from '@heroicons/vue/24/solid';
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import 'videojs-hotkeys';
 import 'videojs-youtube';
+import Checkbox from './Checkbox.vue';
 
 defineEmits(['back']);
 const props = defineProps<{
   source: {
     src: string;
     type?: string;
+    currentTime?: number;
+    playbackRate?: number;
   };
 }>();
 const playerEl = ref<Element | null>(null);
@@ -19,7 +22,10 @@ let startTime: number | null;
 let ticker: number | undefined;
 const startClock = ref<String | null>(null);
 onMounted(() => {
-  console.log(props.source);
+  const source = {
+    src: props.source.src,
+    type: props.source.type ?? null,
+  };
   player = videojs(
     playerEl.value!,
     {
@@ -31,10 +37,10 @@ onMounted(() => {
         },
       },
       playbackRates: [0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5],
-      sources: [props.source],
+      sources: [source],
     },
     () => {
-      player.src(props.source);
+      player.src(source);
       player.hotkeys({
         volumeStep: 0.1,
         seekStep: 5,
@@ -53,6 +59,26 @@ onMounted(() => {
           }, 10000);
         }
       });
+      player.on('pause', () => {
+        if (isProgressSaveEnabled) {
+          localStorage.setItem(
+            'ProgressSave-v1',
+            JSON.stringify({
+              currentTime: player.currentTime(),
+              duration: player.duration(),
+              playbackRate: player.playbackRate(),
+              src: props.source.src,
+              type: props.source.type ?? null,
+            })
+          );
+        }
+      });
+      if (props.source.currentTime) {
+        player.currentTime(props.source.currentTime);
+      }
+      if (props.source.playbackRate) {
+        player.playbackRate(props.source.playbackRate);
+      }
     }
   );
 });
@@ -78,6 +104,16 @@ const promptPlaybackSpeed = () => {
     }
   }
 };
+
+const isProgressSaveEnabled = computed<boolean>({
+  get() {
+    // The keys and the values are always strings.
+    return localStorage.getItem('isProgressSaveEnabled') === 'true';
+  },
+  set(newValue) {
+    localStorage.setItem('isProgressSaveEnabled', newValue.toString());
+  },
+});
 </script>
 
 <template>
@@ -99,6 +135,12 @@ const promptPlaybackSpeed = () => {
       @click="promptPlaybackSpeed"
       >Set playback speed</a
     >
+    <label class="block my-1 text-sm text-gray-500 dark:text-gray-400">
+      <div class="flex items-center">
+        <Checkbox v-model:checked="isProgressSaveEnabled" />
+        <div class="ml-2">Save video progress in this device</div>
+      </div>
+    </label>
   </div>
   <div class="tracking-wide text-center text-green-600 dark:text-red-500 mt-6">
     <a class="cursor-pointer" @click="$emit('back')">
