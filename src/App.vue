@@ -201,12 +201,6 @@ onMounted(() => {
             >Add to Bookmark</a
           >&nbsp;|&nbsp;
         </span>
-        <a
-          class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-          href="http://player-v1.docchula.com"
-          target="_blank"
-          >v1 player</a
-        >&nbsp;|&nbsp;
         <SunIcon
           class="inline-block h-5 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
           title="Toggle dark theme"
