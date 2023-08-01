@@ -12,6 +12,7 @@ import {
   XMarkIcon,
 } from '@heroicons/vue/20/solid';
 import BookmarkModal from './components/BookmarkModal.vue';
+import { ProgressItem } from './types';
 
 const source = ref<{
   src: string;
@@ -24,7 +25,6 @@ const processUrl = (rawInput: string | { src: string } | null) => {
     type?: string;
     currentTime?: number;
   } | null = null;
-  console.log(rawInput);
   if (rawInput && (typeof rawInput === 'object' || isValidHttpUrl(rawInput))) {
     if (typeof rawInput === 'object') {
       input = rawInput;
@@ -148,29 +148,38 @@ const isValidHttpUrl = (string: string) => {
   }
   return url.protocol === 'http:' || url.protocol === 'https:';
 };
-const savedProgress = computed(() => {
-  const progressString = localStorage.getItem('ProgressSave-v1');
-  if (progressString && localStorage.getItem('isProgressSaveEnabled')) {
-    const progress = JSON.parse(progressString);
-    // ignore if the source is the same as the current source and no progress
-    if (
-      progress.src === source.value?.src &&
-      (progress.currentTime <= 120 ||
-        (source.value?.currentTime &&
-          progress.currentTime <= source.value?.currentTime))
-    ) {
-      return null;
+const savedProgressLocal = ref<ProgressItem[] | null>(null);
+const savedProgress = computed<ProgressItem[]>({
+  get() {
+    if (savedProgressLocal.value) {
+      return savedProgressLocal.value;
     }
-    return progress;
-  }
-  return null;
+    const progressString = localStorage.getItem('ProgressSave-v1');
+    if (progressString && localStorage.getItem('isProgressSaveEnabled')) {
+      let progressList = JSON.parse(progressString);
+      // ignore if the source is the same as the current source and no progress
+      if (!Array.isArray(progressList)) {
+        progressList = [progressList];
+      }
+      progressList.filter((progress: any) => {
+        return !(
+          progress.src === source.value?.src &&
+          (progress.currentTime <= 120 ||
+            (source.value?.currentTime &&
+              progress.currentTime <= source.value?.currentTime))
+        );
+      });
+      return progressList;
+    }
+    return [];
+  },
+  set(newValue) {
+    savedProgressLocal.value = newValue;
+    localStorage.setItem('ProgressSave-v1', JSON.stringify(newValue));
+  },
 });
-const progressPlay = () => {
-  processUrl(savedProgress.value);
-};
-const progressDelete = () => {
-  localStorage.removeItem('ProgressSave-v1');
-  hideProgress.value = true;
+const progressDelete = (progress: ProgressItem) => {
+  savedProgress.value = savedProgress.value.filter(p => p.src !== progress.src);
 };
 const hideProgress = ref<boolean>(false);
 onMounted(() => {
@@ -220,38 +229,53 @@ onMounted(() => {
 
       <div class="mt-8">
         <div
-          v-if="savedProgress && !hideProgress"
-          class="flex gap-4 rounded p-3 mb-4 text-sm bg-gray-200 dark:bg-gray-700 items-center"
+          v-if="savedProgress.length > 0 && !hideProgress"
+          class="space-y-2 rounded p-3 pt-1 mb-4 bg-gray-200 dark:bg-gray-700 items-center"
         >
-          <div v-if="savedProgress.thumbnail" class="flex-auto">
-            <img :src="savedProgress.thumbnail" class="w-full max-w-[10rem]" />
-          </div>
-          <div class="flex-auto dark:text-gray-200">
-            <p class="text-xs font-bold text-gray-500 dark:text-gray-400">
+          <div class="flex text-gray-500 dark:text-gray-400 items-center">
+            <p class="flex-auto text-xs font-bold items-center">
               SAVED PROGRESS
             </p>
-            Do you want to continue watching
-            {{ savedProgress.src.split('?').shift().split('/').pop() }}? ({{
-              Math.round(savedProgress.currentTime / 60)
-            }}
-            min/{{ Math.round(savedProgress.duration / 60) }} min)
+            <div class="text-right">
+              <XMarkIcon
+                class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                @click="hideProgress = true"
+              />
+            </div>
           </div>
-          <div class="text-center text-gray-500 dark:text-gray-400">
-            <PlayIcon
-              class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
-              @click="progressPlay"
-            />
-            <!-- ArrowTopRightOnSquareIcon
+          <div v-for="progress in savedProgress" class="flex gap-4">
+            <div v-if="progress.thumbnail" class="flex">
+              <img
+                :class="{
+                  'max-w-[8rem]': savedProgress.length <= 1,
+                  'max-w-[6rem]': savedProgress.length > 1,
+                }"
+                :src="progress.thumbnail"
+                class="w-full"
+              />
+            </div>
+            <div class="flex-auto dark:text-gray-200">
+              {{ progress.src.split('?').shift()?.split('/').pop() }}&ensp;
+              <span class="text-sm text-gray-600 dark:text-gray-300">
+                ({{ Math.round(progress.currentTime / 60) }} min/{{
+                  Math.round(progress.duration / 60)
+                }}
+                min)
+              </span>
+            </div>
+            <div class="text-center text-gray-500 dark:text-gray-400">
+              <PlayIcon
+                class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                @click="processUrl(progress)"
+              />
+              <!-- ArrowTopRightOnSquareIcon
               class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
             / -->
-            <TrashIcon
-              class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
-              @click="progressDelete"
-            />
-            <XMarkIcon
-              class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
-              @click="hideProgress = true"
-            />
+              <TrashIcon
+                class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                @click="progressDelete(progress)"
+              />
+            </div>
           </div>
         </div>
         <Player v-if="source" :source="source" @back="processUrl(null)" />

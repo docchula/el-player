@@ -6,14 +6,13 @@ import 'video.js/dist/video-js.css';
 import 'videojs-hotkeys';
 import 'videojs-youtube';
 import Checkbox from './Checkbox.vue';
+import { ProgressItem } from '../types';
 
 defineEmits(['back']);
 const props = defineProps<{
-  source: {
+  source: Partial<ProgressItem> & {
     src: string;
     type?: string;
-    currentTime?: number;
-    playbackRate?: number;
   };
 }>();
 const playerEl = ref<Element | null>(null);
@@ -61,21 +60,45 @@ onMounted(() => {
       });
       player.on('pause', () => {
         if (isProgressSaveEnabled) {
-          localStorage.setItem(
-            'ProgressSave-v1',
-            JSON.stringify({
-              currentTime: player.currentTime(),
-              duration: player.duration(),
-              playbackRate: player.playbackRate(),
-              src: props.source.src,
-              type: props.source.type ?? null,
-              thumbnail: props.source.src.startsWith(
-                'http://cdn.md.chula.ac.th/content/'
-              )
-                ? props.source.src.replace('/media/1.mp4', '/index/0.jpg')
-                : null,
-            })
+          let progressList = [];
+          const progressString = localStorage.getItem('ProgressSave-v1');
+          if (progressString && localStorage.getItem('isProgressSaveEnabled')) {
+            progressList = JSON.parse(progressString);
+            if (!Array.isArray(progressList)) {
+              progressList = [];
+            }
+          }
+          const expireLimit = new Date();
+          expireLimit.setMonth(expireLimit.getMonth() - 1);
+          // Remove progress of this video & expired progress
+          progressList = progressList.filter(
+            p =>
+              p.src.toLowerCase().split('?').shift() !==
+                props.source.src.toLowerCase().split('?').shift() &&
+              p.updated_at &&
+              new Date(p.updated_at) > expireLimit
           );
+          if (progressList.length >= 3) {
+            // Save only 3 latest progress
+            progressList = progressList
+              .sort((a, b) => -a.updated_at.localeCompare(b.updated_at))
+              .slice(0, 2);
+          }
+          progressList.push({
+            currentTime: player.currentTime(),
+            duration: player.duration(),
+            playbackRate: player.playbackRate(),
+            src: props.source.src,
+            type: props.source.type ?? null,
+            updated_at: new Date().toISOString(),
+            thumbnail: props.source.src.startsWith(
+              'http://cdn.md.chula.ac.th/content/'
+            )
+              ? props.source.src.replace('/media/1.mp4', '/index/0.jpg')
+              : null,
+          });
+
+          localStorage.setItem('ProgressSave-v1', JSON.stringify(progressList));
         }
       });
       if (props.source.currentTime) {
@@ -110,12 +133,16 @@ const promptPlaybackSpeed = () => {
   }
 };
 
+const isProgressSaveEnabledLocal = ref<boolean | null>(null);
 const isProgressSaveEnabled = computed<boolean>({
   get() {
     // The keys and the values are always strings.
-    return localStorage.getItem('isProgressSaveEnabled') === 'true';
+    return isProgressSaveEnabledLocal.value === null
+      ? localStorage.getItem('isProgressSaveEnabled') === 'true'
+      : isProgressSaveEnabledLocal.value;
   },
   set(newValue) {
+    isProgressSaveEnabledLocal.value = newValue;
     localStorage.setItem('isProgressSaveEnabled', newValue.toString());
   },
 });
@@ -140,10 +167,21 @@ const isProgressSaveEnabled = computed<boolean>({
       @click="promptPlaybackSpeed"
       >Set playback speed</a
     >
-    <label class="block my-1 text-sm text-gray-500 dark:text-gray-400">
+    <label
+      class="block my-1 text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
+    >
       <div class="flex items-center">
         <Checkbox v-model:checked="isProgressSaveEnabled" />
-        <div class="ml-2">Save video progress in this device</div>
+        <div class="ml-2">
+          Save video progress in this device
+          <p
+            v-if="isProgressSaveEnabled"
+            class="text-xs text-gray-500 dark:text-gray-500"
+          >
+            After you close this tab, just visit <i>player.docchula.com</i> to
+            resume watching.
+          </p>
+        </div>
       </div>
     </label>
   </div>
