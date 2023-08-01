@@ -223,6 +223,9 @@ onMounted(() => {
           v-if="savedProgress && !hideProgress"
           class="flex gap-4 rounded p-3 mb-4 text-sm bg-gray-200 dark:bg-gray-700 items-center"
         >
+          <div v-if="savedProgress.thumbnail" class="flex-auto">
+            <img :src="savedProgress.thumbnail" class="w-full max-w-[10rem]" />
+          </div>
           <div class="flex-auto dark:text-gray-200">
             <p class="text-xs font-bold text-gray-500 dark:text-gray-400">
               SAVED PROGRESS

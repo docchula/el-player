@@ -69,6 +69,11 @@ onMounted(() => {
               playbackRate: player.playbackRate(),
               src: props.source.src,
               type: props.source.type ?? null,
+              thumbnail: props.source.src.startsWith(
+                'http://cdn.md.chula.ac.th/content/'
+              )
+                ? props.source.src.replace('/media/1.mp4', '/index/0.jpg')
+                : null,
             })
           );
         }
