@@ -161,15 +161,14 @@ const savedProgress = computed<ProgressItem[]>({
       if (!Array.isArray(progressList)) {
         progressList = [progressList];
       }
-      progressList.filter((progress: any) => {
-        return !(
-          progress.src === source.value?.src &&
-          (progress.currentTime <= 120 ||
-            (source.value?.currentTime &&
-              progress.currentTime <= source.value?.currentTime))
+      return progressList.filter((progress: ProgressItem) => {
+        return (
+          (progress.src?.toLowerCase().split('?').shift() !==
+            source.value?.src?.toLowerCase().split('?').shift() ||
+            !source.value?.currentTime) &&
+          progress.currentTime > 1
         );
       });
-      return progressList;
     }
     return [];
   },
