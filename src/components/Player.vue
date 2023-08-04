@@ -158,16 +158,22 @@ const isProgressSaveEnabled = computed<boolean>({
     Your browser does not support the video tag.
   </video>
   <div class="my-4 text-gray-500 dark:text-gray-200">
-    <p class="my-2 hidden md:block text-gray-400 dark:text-gray-300">
-      <b>Hotkeys</b>&emsp; Space: Pause, ▲/▼: Volume, ◄/►: Seek, F: Fullscreen
-    
-    <span v-if="startClock">Time spent on this page: {{ startClock }} | </span
-    ><button
-      class="cursor-pointer text-gray-400 dark:text-gray-300 py-1 px-4 bg-transparent font-semibold border border-green-600 rounded hover:bg-green-600 hover:border-transparent transition ease-in duration-200"
-      @click="promptPlaybackSpeed"
-      >Set playback speed</button
-    >
-  </p>
+    <div class="mb-2 sm:flex gap-4 space-y-2">
+      <div class="flex-auto">
+        <p class="my-2 hidden md:block text-gray-400 dark:text-gray-300">
+          <b>Hotkeys</b>&emsp; Space: Pause, ▲/▼: Volume, ◄/►: Seek, F: Fullscreen
+        </p>
+        <p v-if="startClock">Time spent on this page: {{ startClock }}</p>
+      </div>
+      <div>
+        <button
+            class="cursor-pointer text-green-600 hover:text-white py-1 px-4 bg-transparent font-semibold border border-green-600 rounded hover:bg-green-600 hover:border-transparent transition ease-in duration-200"
+            @click="promptPlaybackSpeed">
+          Set playback speed
+        </button>
+      </div>
+    </div>
+
     <label
       class="block my-1 text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
     >
