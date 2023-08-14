@@ -4,6 +4,8 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import 'videojs-hotkeys';
+import 'videojs-overlay';
+import 'videojs-overlay/dist/videojs-overlay.css';
 import 'videojs-youtube';
 import Checkbox from './Checkbox.vue';
 import { ProgressItem } from '../types';
@@ -17,6 +19,7 @@ const props = defineProps<{
 }>();
 const playerEl = ref<Element | null>(null);
 let player: any;
+let playerOverlayInterface: any;
 let startTime: number | null;
 let ticker: number | undefined;
 const startClock = ref<String | null>(null);
@@ -45,6 +48,11 @@ onMounted(() => {
         seekStep: 5,
         enableModifiersForNumbers: false,
         enableVolumeScroll: false,
+      });
+      playerOverlayInterface = player.overlay({
+        showBackground: false,
+        class: 'bg-black bg-opacity-25 text-white opacity-50 text-xl',
+        overlays: [],
       });
       player.on('play', () => {
         if (!startTime) {
@@ -109,6 +117,11 @@ onMounted(() => {
       }
     }
   );
+
+  // set hotkey "T" to toggle clock
+  document
+    .getElementsByTagName('body')[0]
+    .addEventListener('keyup', keyToggleClock);
 });
 onBeforeUnmount(() => {
   if (player) {
@@ -117,6 +130,9 @@ onBeforeUnmount(() => {
   if (ticker) {
     clearInterval(ticker);
   }
+  document
+    .getElementsByTagName('body')[0]
+    .removeEventListener('keyup', keyToggleClock);
 });
 const promptPlaybackSpeed = () => {
   const speed = prompt(
@@ -146,6 +162,85 @@ const isProgressSaveEnabled = computed<boolean>({
     localStorage.setItem('isProgressSaveEnabled', newValue.toString());
   },
 });
+
+const toggleClock = (isEnabled: boolean) => {
+  if (isEnabled !== isClockEnabledLocal.value) {
+    isClockEnabledLocal.value = isEnabled;
+    if (isEnabled) {
+      if (playerOverlayInterface) {
+        showClock();
+      } else {
+        setTimeout(showClock, 3000);
+      }
+    } else if (clockOverlay && playerOverlayInterface) {
+      playerOverlayInterface.remove(playerOverlayInterface.get()[0]);
+      clockOverlay = null;
+      if (clockTicker) {
+        clearInterval(clockTicker);
+        clockTicker = null;
+      }
+    }
+  }
+  return isEnabled;
+};
+const showClock = () => {
+  clockOverlay = playerOverlayInterface.add({
+    content: 'Loading',
+    start: 'playing',
+    end: '',
+  });
+  if (!player.paused()) {
+    player.pause();
+    player.play();
+  }
+  if (!clockTicker) {
+    clockTicker = setInterval(() => {
+      if (clockOverlay) {
+        const date = new Date();
+        let timeString = date.toLocaleTimeString('th-TH', {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+        if (date.getSeconds() % 4 >= 2) {
+          // The colon sign blinks every four seconds
+          timeString = timeString.replace(
+            ':',
+            '<span class="opacity-0">:</span>'
+          );
+        }
+        if (clockOverlay[0].contentEl()) {
+          clockOverlay[0].contentEl().innerHTML = timeString;
+        } else {
+          clockOverlay = null;
+          if (clockTicker) {
+            clearInterval(clockTicker);
+            clockTicker = null;
+          }
+        }
+      }
+    }, 2000);
+  }
+};
+let clockOverlay: any = null;
+let clockTicker: any = null;
+const isClockEnabledLocal = ref<boolean | null>(null);
+const isClockEnabled = computed<boolean>({
+  get() {
+    // The keys and the values are always strings.
+    return isClockEnabledLocal.value === null
+      ? toggleClock(localStorage.getItem('isClockEnabled') === 'true')
+      : isClockEnabledLocal.value;
+  },
+  set(newValue) {
+    toggleClock(newValue);
+    localStorage.setItem('isClockEnabled', newValue.toString());
+  },
+});
+const keyToggleClock = (event: KeyboardEvent) => {
+  if (event.key === 't') {
+    isClockEnabled.value = !isClockEnabled.value;
+  }
+};
 </script>
 
 <template>
@@ -161,14 +256,16 @@ const isProgressSaveEnabled = computed<boolean>({
     <div class="mb-2 sm:flex gap-4 space-y-2">
       <div class="flex-auto">
         <p class="my-2 hidden md:block text-gray-400 dark:text-gray-300">
-          <b>Hotkeys</b>&emsp; Space: Pause, ▲/▼: Volume, ◄/►: Seek, F: Fullscreen
+          <b>Hotkeys</b>&emsp; Space: Pause, ▲/▼: Volume, ◄/►: Seek, F:
+          Fullscreen<span v-if="isClockEnabled">, T: Toggle clock</span>
         </p>
         <p v-if="startClock">Time spent on this page: {{ startClock }}</p>
       </div>
       <div>
         <button
-            class="cursor-pointer text-green-600 hover:text-white py-1 px-4 bg-transparent font-semibold border border-green-600 rounded hover:bg-green-600 hover:border-transparent transition ease-in duration-200"
-            @click="promptPlaybackSpeed">
+          class="cursor-pointer text-green-600 hover:text-white py-1 px-4 bg-transparent font-semibold border border-green-600 rounded hover:bg-green-600 hover:border-transparent transition ease-in duration-200"
+          @click="promptPlaybackSpeed"
+        >
           Set playback speed
         </button>
       </div>
@@ -187,6 +284,23 @@ const isProgressSaveEnabled = computed<boolean>({
           >
             After you close this tab, just visit <i>player.docchula.com</i> to
             resume watching.
+          </p>
+        </div>
+      </div>
+    </label>
+    <label
+      class="block my-1 text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
+    >
+      <div class="flex items-center">
+        <Checkbox v-model:checked="isClockEnabled" />
+        <div class="ml-2">
+          Show clock in the player
+          <p
+            v-if="isClockEnabled"
+            class="text-xs text-gray-500 dark:text-gray-500"
+          >
+            The clock is shown at the top-left corner of the player after the
+            video starts playing.
           </p>
         </div>
       </div>

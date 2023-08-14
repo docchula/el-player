@@ -17,6 +17,9 @@ dependencies:
   videojs-hotkeys:
     specifier: ^0.2.28
     version: 0.2.28
+  videojs-overlay:
+    specifier: ^3.1.0
+    version: 3.1.0
   videojs-youtube:
     specifier: ^3.0.1
     version: 3.0.1(video.js@8.3.0)
@@ -1920,6 +1923,13 @@ packages:
 
   /videojs-hotkeys@0.2.28:
     resolution: {integrity: sha512-M8rlD5OSB3EDRdbS4MRNlGKFpA2sSIStmUPvy5zfl/NigzWaN6r4wnb32rEN0v97GiQwmUfXSmqrPNrXhiFQmQ==}
+    dev: false
+
+  /videojs-overlay@3.1.0:
+    resolution: {integrity: sha512-P863Z4ghWgf7Z4A4uzmHlqIixRb8v5220JuQ4pfb/uorbWSBCt5D+czrp/eTxXXLtSmrSUKn596QswVYZuMzPg==}
+    dependencies:
+      global: 4.4.0
+      video.js: 8.3.0
     dev: false
 
   /videojs-vtt.js@0.15.4:
