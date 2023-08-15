@@ -194,22 +194,14 @@ const showClock = () => {
     player.play();
   }
   if (!clockTicker) {
+    // update the clock immediately, then update every 2 seconds
+    if (clockOverlay[0].contentEl()) {
+      clockOverlay[0].contentEl().innerHTML = getClockString();
+    }
     clockTicker = setInterval(() => {
       if (clockOverlay) {
-        const date = new Date();
-        let timeString = date.toLocaleTimeString('th-TH', {
-          hour: '2-digit',
-          minute: '2-digit',
-        });
-        if (date.getSeconds() % 4 >= 2) {
-          // The colon sign blinks every four seconds
-          timeString = timeString.replace(
-            ':',
-            '<span class="opacity-0">:</span>'
-          );
-        }
         if (clockOverlay[0].contentEl()) {
-          clockOverlay[0].contentEl().innerHTML = timeString;
+          clockOverlay[0].contentEl().innerHTML = getClockString();
         } else {
           clockOverlay = null;
           if (clockTicker) {
@@ -220,6 +212,18 @@ const showClock = () => {
       }
     }, 2000);
   }
+};
+const getClockString = () => {
+  const date = new Date();
+  const timeString = date.toLocaleTimeString('th-TH', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  if (date.getSeconds() % 4 >= 2) {
+    // The colon sign blinks every four seconds
+    return timeString.replace(':', '<span class="opacity-0">:</span>');
+  }
+  return timeString;
 };
 let clockOverlay: any = null;
 let clockTicker: any = null;
