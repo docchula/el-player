@@ -245,6 +245,7 @@ const keyToggleClock = (event: KeyboardEvent) => {
     isClockEnabled.value = !isClockEnabled.value;
   }
 };
+const origin = window.location.origin;
 </script>
 
 <template>
@@ -290,8 +291,8 @@ const keyToggleClock = (event: KeyboardEvent) => {
             v-if="isProgressSaveEnabled"
             class="text-xs text-gray-500 dark:text-gray-500"
           >
-            After you close this tab, just visit <i>player.docchula.com</i> to
-            resume watching.
+            After you close this tab, just visit <i>{{ origin }}</i> to resume
+            watching.
           </p>
         </div>
       </div>
