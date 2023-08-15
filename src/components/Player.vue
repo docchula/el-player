@@ -259,9 +259,13 @@ const keyToggleClock = (event: KeyboardEvent) => {
   <div class="my-4 text-gray-500 dark:text-gray-200">
     <div class="mb-2 sm:flex gap-4 space-y-2">
       <div class="flex-auto">
-        <p class="my-2 hidden md:block text-gray-400 dark:text-gray-300">
+        <p
+          class="my-2 hidden md:block text-gray-400 dark:text-gray-400 text-sm"
+        >
           <b>Hotkeys</b>&emsp; Space: Pause, ▲/▼: Volume, ◄/►: Seek, F:
-          Fullscreen<span v-if="isClockEnabled">, T: Toggle clock</span>
+          Fullscreen<span :class="{ 'opacity-0': !isClockEnabled }"
+            >, T: Toggle clock</span
+          >
         </p>
         <p v-if="startClock">Time spent on this page: {{ startClock }}</p>
       </div>
