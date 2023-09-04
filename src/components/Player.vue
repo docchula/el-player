@@ -99,8 +99,8 @@ onMounted(() => {
             src: props.source.src,
             type: props.source.type ?? null,
             updated_at: new Date().toISOString(),
-            thumbnail: props.source.src.startsWith(
-              'http://cdn.md.chula.ac.th/content/'
+            thumbnail: props.source.src.includes(
+              '//cdn.md.chula.ac.th/content/'
             )
               ? props.source.src.replace('/media/1.mp4', '/index/0.jpg')
               : null,

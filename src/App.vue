@@ -37,7 +37,7 @@ const processUrl = (rawInput: string | { src: string } | null) => {
         if (rawInput.includes('aculearn-idm/')) {
           input = {
             src:
-              'http://cdn.md.chula.ac.th/content/' +
+              'https://cdn.md.chula.ac.th/content/' +
               urlInput.searchParams.get('author') +
               '/' +
               urlInput.searchParams.get('modulename') +
@@ -49,7 +49,7 @@ const processUrl = (rawInput: string | { src: string } | null) => {
         } else if (rawInput.includes('aculearn-me/')) {
           input = {
             src:
-              'http://cdn1.md.chula.ac.th/content/' +
+              'https://cdn1.md.chula.ac.th/content/' +
               urlInput.searchParams.get('author') +
               '/' +
               urlInput.searchParams.get('modulename') +

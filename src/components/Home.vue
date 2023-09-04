@@ -20,7 +20,7 @@ const url = ref(props?.url);
           id="url"
           v-model.trim="url"
           class="block w-full rounded-md border-gray-300 focus:border-green-400 transition duration-1000 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
-          placeholder="http://cdn.md.chula.ac.th/aculearn-idm/..."
+          placeholder="https://cdn.md.chula.ac.th/aculearn-idm/..."
           type="text"
         />
       </div>
