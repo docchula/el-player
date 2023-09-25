@@ -282,39 +282,68 @@ onMounted(() => {
       </div>
 
       <div
-        class="mt-20 mb-4 text-xs font-light text-gray-400 transition duration-1000 dark:text-gray-300 text-center"
+        class="mt-20 mb-4 text-xs font-light text-gray-400 transition duration-1000 dark:text-gray-400 text-center"
       >
-        Created with ❤ by Keen&nbsp;|&nbsp;
-        <a
-          class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-          href="https://github.com/docchula/el-player"
-          target="_blank"
-          >Source Code</a
-        >&nbsp;|&nbsp;
-        <span class="hidden md:inline">
+        <p class="mb-2">
+          <small
+            class="uppercase p-0.5 mr-1 border rounded-sm text-gray-300 border-gray-300 dark:text-gray-500 dark:border-gray-500"
+            >Beta</small
+          >
+          MDCU E-Learning is now accessible through
           <a
-            class="cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-            @click="showBookmarkModal = true"
-            >Add to Bookmark</a
+            class="text-gray-500 dark:text-gray-300"
+            href="https://flick.docchula.com"
+            target="_blank"
+            >Docchula Flick</a
+          >, with a progress saving feature so you can pick up right where you
+          left off!
+        </p>
+        <p class="mb-2">
+          <small
+            class="uppercase p-0.5 mr-1 border rounded-sm text-gray-300 border-gray-300 dark:text-gray-500 dark:border-gray-500"
+            >Beta</small
+          >
+          Introducing
+          <a
+            class="text-gray-500 dark:text-gray-300"
+            href="https://random.docchula.com"
+            target="_blank"
+            >Dog Randomizer</a
+          >, a randomizer for team that eliminates the need for a trusted party.
+        </p>
+        <p>
+          Created with ❤ by Keen&nbsp;|&nbsp;
+          <a
+            class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            href="https://github.com/docchula/el-player"
+            target="_blank"
+            >Source Code</a
           >&nbsp;|&nbsp;
-        </span>
-        <SunIcon
-          class="inline-block h-5 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-          title="Toggle dark theme"
-          @click="toggleDarkMode"
-        />&nbsp;
-        <LockOpenIcon
-          v-if="lockTheme === 'false'"
-          class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-          title="Enable theme lock"
-          @click="toggleLockTheme"
-        />
-        <LockClosedIcon
-          v-else
-          class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
-          title="Disable dark theme"
-          @click="toggleLockTheme"
-        />
+          <span class="hidden md:inline">
+            <a
+              class="cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+              @click="showBookmarkModal = true"
+              >Add to Bookmark</a
+            >&nbsp;|&nbsp;
+          </span>
+          <SunIcon
+            class="inline-block h-5 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            title="Toggle dark theme"
+            @click="toggleDarkMode"
+          />&nbsp;
+          <LockOpenIcon
+            v-if="lockTheme === 'false'"
+            class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            title="Enable theme lock"
+            @click="toggleLockTheme"
+          />
+          <LockClosedIcon
+            v-else
+            class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            title="Disable dark theme"
+            @click="toggleLockTheme"
+          />
+        </p>
       </div>
     </div>
   </div>
