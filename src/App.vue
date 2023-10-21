@@ -213,15 +213,20 @@ onMounted(() => {
     </div>
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-10 md:mt-12">
       <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-        <h1 class="text-6xl font-extrabold md:px-4 lg:px-12">
+        <h1 class="mx-auto text-6xl font-extrabold md:px-4 lg:px-12">
           <span
-            class="text-transparent bg-clip-text bg-gradient-to-br from-emerald-300 dark:from-emerald-200 to-green-700 dark:to-green-600"
+            class="text-transparent bg-clip-text bg-gradient-to-br from-emerald-300 dark:from-orange-600 to-green-700 dark:to-amber-400"
             >Docchula</span
           >
           <span class="text-4xl">&ensp;</span>
           <span
+            class="text-gray-700 transition duration-1000 dark:text-gray-200 dark:hidden"
+            >Video</span
+          >
+          <img class="w-24 hidden dark:inline" src="/icon-hw.png"/>
+          <span
             class="text-gray-700 transition duration-1000 dark:text-gray-200"
-            >Video Player</span
+            > Player</span
           >
         </h1>
       </div>

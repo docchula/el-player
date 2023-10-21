@@ -254,6 +254,7 @@ const origin = window.location.origin;
     class="video-js vjs-default-skin vjs-big-play-centered w-max"
     controls
     preload="metadata"
+    poster="/poster-hw.gif"
   >
     Your browser does not support the video tag.
   </video>
@@ -272,7 +273,7 @@ const origin = window.location.origin;
       </div>
       <div>
         <button
-          class="cursor-pointer text-green-600 hover:text-white py-1 px-4 bg-transparent font-semibold border border-green-600 rounded hover:bg-green-600 hover:border-transparent transition ease-in duration-200"
+          class="cursor-pointer text-amber-600 hover:text-white py-1 px-4 bg-transparent font-semibold border border-amber-600 rounded hover:bg-amber-600 hover:border-transparent transition ease-in duration-200"
           @click="promptPlaybackSpeed"
         >
           Set playback speed
