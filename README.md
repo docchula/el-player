@@ -54,3 +54,4 @@ server {
 Add your name here when you're continuing the legacy!
 
 - MDCU74: Siwat Techavoranant
+- MDCU78: Ittipat Thanabodikarn
