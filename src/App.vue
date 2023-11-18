@@ -2,17 +2,10 @@
 import Home from './components/Home.vue';
 import Player from './components/Player.vue';
 import Timer from './components/Timer.vue';
-import { computed, onMounted, ref } from 'vue';
-import {
-  LockClosedIcon,
-  LockOpenIcon,
-  PlayIcon,
-  SunIcon,
-  TrashIcon,
-  XMarkIcon,
-} from '@heroicons/vue/20/solid';
+import {computed, onMounted, ref} from 'vue';
+import {LockClosedIcon, LockOpenIcon, PlayIcon, SunIcon, TrashIcon, XMarkIcon} from '@heroicons/vue/20/solid';
 import BookmarkModal from './components/BookmarkModal.vue';
-import { ProgressItem } from './types';
+import {ProgressItem} from './types';
 
 const source = ref<{
   src: string;
@@ -168,6 +161,15 @@ const savedProgress = computed<ProgressItem[]>({
             !source.value?.currentTime) &&
           progress.currentTime > 1
         );
+      }).map((progress: ProgressItem) => {
+        if (progress.src.includes('://cdn.md.chula.ac.th/content/') || progress.src.includes('://cdn1.md.chula.ac.th/content/')) {
+          progress.name = 'MDCU E-Learning Video';
+        } else if (progress.src.startsWith('https://drive.google.com/uc')) {
+          progress.name = 'Google Drive Video';
+        } else {
+          progress.name = progress.src.split('?').shift()?.split('/').pop();
+        }
+        return progress;
       });
     }
     return [];
@@ -254,7 +256,7 @@ onMounted(() => {
               />
             </div>
             <div class="flex-auto dark:text-gray-200">
-              {{ progress.src.split('?').shift()?.split('/').pop() }}&ensp;
+              {{ progress.name }}&ensp;
               <span class="text-sm text-gray-600 dark:text-gray-300">
                 ({{ Math.round(progress.currentTime / 60) }} min/{{
                   Math.round(progress.duration / 60)

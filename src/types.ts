@@ -5,4 +5,5 @@ export type ProgressItem = {
   duration: number;
   playbackRate?: number;
   thumbnail?: string | null;
+  name?: string;
 };
