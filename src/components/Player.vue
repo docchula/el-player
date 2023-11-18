@@ -103,6 +103,8 @@ onMounted(() => {
               '//cdn.md.chula.ac.th/content/'
             )
               ? props.source.src.replace('/media/1.mp4', '/index/0.jpg')
+              : props.source.src.includes('//drive.google.com/')
+              ? props.source.src.replace('uc?export=download&', 'thumbnail?')
               : null,
           });
 
