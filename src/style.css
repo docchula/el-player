@@ -12,4 +12,11 @@
 
 body {
     background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8) ), url('/background.jpg');
+    background-size: cover;
+}
+
+@media (min-width: 640px) {
+    body {
+        background-attachment: fixed;
+    }
 }
