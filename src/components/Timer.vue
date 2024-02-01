@@ -186,7 +186,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
             <input
               id="input-study"
               v-model.number="settings.studyDuration"
-              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
               max="360"
               min="1"
               placeholder="25"
@@ -202,7 +202,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
             <input
               id="input-break"
               v-model.number="settings.breakDuration"
-              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
               max="360"
               min="1"
               placeholder="5"
@@ -218,7 +218,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
             <input
               id="input-long-break"
               v-model.number="settings.longBreakDuration"
-              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
               max="360"
               min="1"
               placeholder="15"
@@ -234,9 +234,9 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
   <div class="absolute top-0 left-0 w-screen h-1.5">
     <div
       :class="{
-        'bg-green-400 dark:bg-green-700': timer.title === 'Study',
+        'bg-pink-400 dark:bg-pink-700': timer.title === 'Study',
         'bg-gray-400 dark:bg-gray-700': timer.title === 'Break',
-        'bg-pink-400 dark:bg-pink-700': timer.title === 'Long Break',
+        'bg-green-400 dark:bg-green-700': timer.title === 'Long Break',
       }"
       :style="{ width: timerPercentage }"
       class="h-full"

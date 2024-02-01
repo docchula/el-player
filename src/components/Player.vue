@@ -274,7 +274,7 @@ const origin = window.location.origin;
       </div>
       <div>
         <button
-          class="cursor-pointer text-green-600 hover:text-white py-1 px-4 bg-transparent font-semibold border border-green-600 rounded hover:bg-green-600 hover:border-transparent transition ease-in duration-200"
+          class="cursor-pointer text-pink-600 hover:text-white py-1 px-4 bg-transparent font-semibold border border-pink-600 rounded hover:bg-pink-600 hover:border-transparent transition ease-in duration-200"
           @click="promptPlaybackSpeed"
         >
           Set playback speed
@@ -317,7 +317,7 @@ const origin = window.location.origin;
       </div>
     </label>
   </div>
-  <div class="tracking-wide text-center text-green-600 dark:text-red-500 mt-6">
+  <div class="tracking-wide text-center text-pink-600 dark:text-red-500 mt-6">
     <a class="cursor-pointer" @click="$emit('back')">
       <ChevronLeftIcon class="inline-block h-5" />
       Back</a
