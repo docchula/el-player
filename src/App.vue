@@ -231,7 +231,7 @@ onMounted(() => {
       <div class="mt-8">
         <div
           v-if="savedProgress.length > 0 && !hideProgress"
-          class="space-y-2 rounded p-3 pt-1 mb-4 bg-gray-200 dark:bg-gray-700 items-center"
+          class="space-y-2 rounded p-3 pt-1 mb-4 bg-gray-200 dark:bg-gray-700 items-center overflow-y-auto max-h-72"
         >
           <div class="flex text-gray-500 dark:text-gray-400 items-center">
             <p class="flex-auto text-xs font-bold items-center">

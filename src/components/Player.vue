@@ -86,8 +86,8 @@ onMounted(() => {
               p.updated_at &&
               new Date(p.updated_at) > expireLimit
           );
-          if (progressList.length >= 3) {
-            // Save only 3 latest progress
+          if (progressList.length >= 10) {
+            // Save only 10 latest progress
             progressList = progressList
               .sort((a, b) => -a.updated_at.localeCompare(b.updated_at))
               .slice(0, 2);
