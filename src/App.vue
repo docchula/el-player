@@ -200,7 +200,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="relative flex items-top justify-center min-h-screen bg-gray-50 transition duration-1000 dark:bg-gray-900 sm:items-center sm:pt-0"
+  class="relative flex items-top justify-center min-h-screen bg-valentine-light bg-bottom bg-[length:100%] bg-no-repeat bg-gray-50 transition duration-300 dark:bg-valentine-dark dark:bg-gray-900 sm:items-center sm:pt-0"
   >
     <div class="absolute top-0 right-0 px-6 py-4 block font-light">
       <a
@@ -217,7 +217,7 @@ onMounted(() => {
       <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
         <h1 class="mx-auto text-6xl font-extrabold md:px-4 lg:px-12">
           <span
-            class="text-transparent bg-clip-text bg-gradient-to-br from-emerald-300 dark:from-emerald-200 to-green-700 dark:to-green-600"
+            class="text-transparent bg-clip-text bg-gradient-to-br from-fuchsia-300 dark:from-fuchsia-200 to-pink-700 dark:to-pink-600"
             >Docchula</span
           >
           <span class="text-4xl">&ensp;</span>
