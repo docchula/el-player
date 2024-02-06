@@ -5,8 +5,8 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'valentine-light': "url('/bg-valentine-light.webp')",
-        'valentine-dark': "url('/bg-valentine-dark.webp')",
+        'valentine-light': "url('/bg-valentine-light.png')",
+        'valentine-dark': "url('/bg-valentine-dark.png')",
       }
     },
   },
