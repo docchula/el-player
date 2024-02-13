@@ -256,6 +256,7 @@ const origin = window.location.origin;
     class="video-js vjs-default-skin vjs-big-play-centered w-max"
     controls
     preload="metadata"
+    poster="/poster-valentine.webp"
   >
     Your browser does not support the video tag.
   </video>
