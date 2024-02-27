@@ -37,46 +37,47 @@ const startTimer = () => {
   }
   if (settings.studyDuration < 0.2 || settings.breakDuration < 0.2) {
     alert('Please provide durations that are at least 1 minute.');
-  }
-  if (timer.count === 0) {
-    timer.title = 'Study';
-    timer.count++;
-  }
-  if (timer.left <= 0) {
-    if (timer.count % 2 === 0) {
-      if (timer.count % 3 === 0) {
-        timer.from = settings.longBreakDuration * 60;
-      } else {
-        timer.from = settings.breakDuration * 60;
-      }
-    } else {
-      timer.from = settings.studyDuration * 60;
-    }
-    timer.left = timer.from;
-  }
-  timer.timerId = setInterval(() => {
-    if (timer.left > 0) {
-      timer.left--;
-    } else {
-      stopTimer();
+  } else {
+    if (timer.count === 0) {
+      timer.title = 'Study';
       timer.count++;
+    }
+    if (timer.left <= 0) {
       if (timer.count % 2 === 0) {
         if (timer.count % 3 === 0) {
-          startTimer();
-          timer.title = 'Long Break';
-          alert('Study time is up! Take a long break.');
+          timer.from = settings.longBreakDuration * 60;
         } else {
-          startTimer();
-          timer.title = 'Break';
-          alert('Study time is up! Take a break.');
+          timer.from = settings.breakDuration * 60;
         }
       } else {
-        startTimer();
-        timer.title = 'Study';
-        alert('Break time is up! Get back to study.');
+        timer.from = settings.studyDuration * 60;
       }
+      timer.left = timer.from;
     }
-  }, 1000);
+    timer.timerId = setInterval(() => {
+      if (timer.left > 0) {
+        timer.left--;
+      } else {
+        stopTimer();
+        timer.count++;
+        if (timer.count % 2 === 0) {
+          if (timer.count % 3 === 0) {
+            startTimer();
+            timer.title = 'Long Break';
+            alert('Study time is up! Take a long break.');
+          } else {
+            startTimer();
+            timer.title = 'Break';
+            alert('Study time is up! Take a break.');
+          }
+        } else {
+          startTimer();
+          timer.title = 'Study';
+          alert('Break time is up! Get back to study.');
+        }
+      }
+    }, 1000);
+  }
 };
 
 const stopTimer = () => {
