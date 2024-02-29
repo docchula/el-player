@@ -37,46 +37,47 @@ const startTimer = () => {
   }
   if (settings.studyDuration < 0.2 || settings.breakDuration < 0.2) {
     alert('Please provide durations that are at least 1 minute.');
-  }
-  if (timer.count === 0) {
-    timer.title = 'Study';
-    timer.count++;
-  }
-  if (timer.left <= 0) {
-    if (timer.count % 2 === 0) {
-      if (timer.count % 3 === 0) {
-        timer.from = settings.longBreakDuration * 60;
-      } else {
-        timer.from = settings.breakDuration * 60;
-      }
-    } else {
-      timer.from = settings.studyDuration * 60;
-    }
-    timer.left = timer.from;
-  }
-  timer.timerId = setInterval(() => {
-    if (timer.left > 0) {
-      timer.left--;
-    } else {
-      stopTimer();
+  } else {
+    if (timer.count === 0) {
+      timer.title = 'Study';
       timer.count++;
+    }
+    if (timer.left <= 0) {
       if (timer.count % 2 === 0) {
         if (timer.count % 3 === 0) {
-          startTimer();
-          timer.title = 'Long Break';
-          alert('Study time is up! Take a long break.');
+          timer.from = settings.longBreakDuration * 60;
         } else {
-          startTimer();
-          timer.title = 'Break';
-          alert('Study time is up! Take a break.');
+          timer.from = settings.breakDuration * 60;
         }
       } else {
-        startTimer();
-        timer.title = 'Study';
-        alert('Break time is up! Get back to study.');
+        timer.from = settings.studyDuration * 60;
       }
+      timer.left = timer.from;
     }
-  }, 1000);
+    timer.timerId = setInterval(() => {
+      if (timer.left > 0) {
+        timer.left--;
+      } else {
+        stopTimer();
+        timer.count++;
+        if (timer.count % 2 === 0) {
+          if (timer.count % 3 === 0) {
+            startTimer();
+            timer.title = 'Long Break';
+            alert('Study time is up! Take a long break.');
+          } else {
+            startTimer();
+            timer.title = 'Break';
+            alert('Study time is up! Take a break.');
+          }
+        } else {
+          startTimer();
+          timer.title = 'Study';
+          alert('Break time is up! Get back to study.');
+        }
+      }
+    }, 1000);
+  }
 };
 
 const stopTimer = () => {
@@ -186,7 +187,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
             <input
               id="input-study"
               v-model.number="settings.studyDuration"
-              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
+              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
               max="360"
               min="1"
               placeholder="25"
@@ -202,7 +203,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
             <input
               id="input-break"
               v-model.number="settings.breakDuration"
-              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
+              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
               max="360"
               min="1"
               placeholder="5"
@@ -218,7 +219,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
             <input
               id="input-long-break"
               v-model.number="settings.longBreakDuration"
-              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
+              class="block w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
               max="360"
               min="1"
               placeholder="15"
@@ -234,9 +235,9 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
   <div class="absolute top-0 left-0 w-screen h-1.5">
     <div
       :class="{
-        'bg-pink-400 dark:bg-pink-700': timer.title === 'Study',
+        'bg-green-400 dark:bg-green-700': timer.title === 'Study',
         'bg-gray-400 dark:bg-gray-700': timer.title === 'Break',
-        'bg-green-400 dark:bg-green-700': timer.title === 'Long Break',
+        'bg-pink-400 dark:bg-pink-700': timer.title === 'Long Break',
       }"
       :style="{ width: timerPercentage }"
       class="h-full"
