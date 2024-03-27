@@ -163,7 +163,6 @@ const savedProgress = computed<ProgressItem[]>({
           );
         })
         .map((progress: ProgressItem) => {
-            console.log(progress.name)
           if (progress.name === undefined) {
             if (
               progress.src.includes('://cdn.md.chula.ac.th/content/') ||
@@ -212,7 +211,6 @@ const progressEdit = (save: boolean) => {
     if (progressString) {
       const progressList = JSON.parse(progressString);
       for (let index = 0; index < savedProgress.value.length; index++) {
-        console.log('works');
         progressList[index].name = savedProgress.value[index].name;
       }
       localStorage.setItem('ProgressSave-v1', JSON.stringify(progressList));
