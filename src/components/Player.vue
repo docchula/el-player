@@ -98,6 +98,7 @@ onMounted(() => {
             playbackRate: player.playbackRate(),
             src: props.source.src,
             type: props.source.type ?? null,
+            name: props.source.name ?? null,
             updated_at: new Date().toISOString(),
             thumbnail: props.source.src.includes(
               '//cdn.md.chula.ac.th/content/'
