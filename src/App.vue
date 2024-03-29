@@ -3,7 +3,7 @@ import Home from './components/Home.vue';
 import Player from './components/Player.vue';
 import Timer from './components/Timer.vue';
 import {computed, onMounted, ref} from 'vue';
-import {LockClosedIcon, LockOpenIcon, PlayIcon, SunIcon, TrashIcon, XMarkIcon} from '@heroicons/vue/20/solid';
+import {CheckIcon, LockClosedIcon, LockOpenIcon, PencilSquareIcon, PlayIcon, SunIcon, TrashIcon, XMarkIcon} from '@heroicons/vue/20/solid';
 import BookmarkModal from './components/BookmarkModal.vue';
 import {ProgressItem} from './types';
 
@@ -155,22 +155,28 @@ const savedProgress = computed<ProgressItem[]>({
         progressList = [progressList];
       }
       return progressList.filter((progress: ProgressItem) => {
-        return (
-          (progress.src?.toLowerCase().split('?').shift() !==
-            source.value?.src?.toLowerCase().split('?').shift() ||
-            !source.value?.currentTime) &&
-          progress.currentTime > 1
-        );
-      }).map((progress: ProgressItem) => {
-        if (progress.src.includes('://cdn.md.chula.ac.th/content/') || progress.src.includes('://cdn1.md.chula.ac.th/content/')) {
-          progress.name = 'MDCU E-Learning Video';
-        } else if (progress.src.startsWith('https://drive.google.com/uc')) {
-          progress.name = 'Google Drive Video';
-        } else {
-          progress.name = progress.src.split('?').shift()?.split('/').pop();
-        }
-        return progress;
-      });
+          return (
+            (progress.src?.toLowerCase().split('?').shift() !==
+              source.value?.src?.toLowerCase().split('?').shift() ||
+              !source.value?.currentTime) &&
+            progress.currentTime > 1
+          );
+        })
+        .map((progress: ProgressItem) => {
+          if (!progress.name) {
+            if (
+              progress.src.includes('://cdn.md.chula.ac.th/content/') ||
+              progress.src.includes('://cdn1.md.chula.ac.th/content/')
+            ) {
+              progress.name = 'MDCU E-Learning Video';
+            } else if (progress.src.startsWith('https://drive.google.com/uc')) {
+              progress.name = 'Google Drive Video';
+            } else {
+              progress.name = progress.src.split('?').shift()?.split('/').pop();
+            }
+          }
+          return progress;
+        });
     }
     return [];
   },
@@ -196,11 +202,19 @@ onMounted(() => {
     document.documentElement.classList.remove('dark');
   }
 });
+
+const renameState = ref<boolean>(false);
+const toggleRename = () => {
+  if (renameState.value) {
+    localStorage.setItem('ProgressSave-v1', JSON.stringify(savedProgress.value));
+  }
+  renameState.value = !renameState.value;
+};
 </script>
 
 <template>
   <div
-  class="relative flex items-top justify-center min-h-screen bg-valentine-light bg-bottom bg-[length:100%] bg-no-repeat bg-gray-50 transition duration-300 dark:bg-valentine-dark dark:bg-gray-900 sm:items-center sm:pt-0"
+    class="relative flex items-top justify-center min-h-screen bg-valentine-light bg-bottom bg-[length:100%] bg-no-repeat bg-gray-50 transition duration-300 dark:bg-valentine-dark dark:bg-gray-900 sm:items-center sm:pt-0"
   >
     <div class="absolute top-0 right-0 px-6 py-4 block font-light">
       <a
@@ -236,6 +250,18 @@ onMounted(() => {
           <div class="flex text-gray-500 dark:text-gray-400 items-center">
             <p class="flex-auto text-xs font-bold items-center">
               SAVED PROGRESS
+              <span v-if="renameState">
+                <CheckIcon
+                  class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                  @click="toggleRename"
+                />
+              </span>
+              <span v-else>
+                <PencilSquareIcon
+                  class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                  @click="toggleRename"
+                />
+              </span>
             </p>
             <div class="text-right">
               <XMarkIcon
@@ -244,7 +270,7 @@ onMounted(() => {
               />
             </div>
           </div>
-          <div v-for="progress in savedProgress" class="flex gap-4">
+          <div v-for="(progress, index) in savedProgress" class="flex gap-4">
             <div v-if="progress.thumbnail" class="flex">
               <img
                 :class="{
@@ -256,7 +282,15 @@ onMounted(() => {
               />
             </div>
             <div class="flex-auto dark:text-gray-200">
-              {{ progress.name }}&ensp;
+              <span v-if="renameState">
+                <input
+                  type="text"
+                  v-model="savedProgress[index].name"
+                  @keyup.enter="toggleRename"
+                  class="rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+                />
+              </span>
+              <span v-else> {{ progress.name }} </span>&ensp;
               <span class="text-sm text-gray-600 dark:text-gray-300">
                 ({{ Math.round(progress.currentTime / 60) }} min/{{
                   Math.round(progress.duration / 60)
