@@ -204,11 +204,11 @@ onMounted(() => {
 });
 
 const renameState = ref<boolean>(false);
-const toggleRename = (save: boolean) => {
-  renameState.value = !renameState.value;
-  if (save) {
+const toggleRename = () => {
+  if (renameState.value) {
     localStorage.setItem('ProgressSave-v1', JSON.stringify(savedProgress.value));
   }
+  renameState.value = !renameState.value;
 };
 </script>
 
@@ -253,13 +253,13 @@ const toggleRename = (save: boolean) => {
               <span v-if="renameState">
                 <CheckIcon
                   class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
-                  @click="toggleRename(true)"
+                  @click="toggleRename"
                 />
               </span>
               <span v-else>
                 <PencilSquareIcon
                   class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
-                  @click="toggleRename(false)"
+                  @click="toggleRename"
                 />
               </span>
             </p>
@@ -286,6 +286,7 @@ const toggleRename = (save: boolean) => {
                 <input
                   type="text"
                   v-model="savedProgress[index].name"
+                  @keyup.enter="toggleRename"
                   class="rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
                 />
               </span>
