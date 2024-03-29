@@ -203,18 +203,11 @@ onMounted(() => {
   }
 });
 
-const editState = ref<boolean>(false);
-const progressEdit = (save: boolean) => {
-  editState.value = !editState.value;
-  if (save === true) {
-    const progressString = localStorage.getItem('ProgressSave-v1');
-    if (progressString) {
-      const progressList = JSON.parse(progressString);
-      for (let index = 0; index < savedProgress.value.length; index++) {
-        progressList[index].name = savedProgress.value[index].name;
-      }
-      localStorage.setItem('ProgressSave-v1', JSON.stringify(progressList));
-    }
+const renameState = ref<boolean>(false);
+const toggleRename = (save: boolean) => {
+  renameState.value = !renameState.value;
+  if (save) {
+    localStorage.setItem('ProgressSave-v1', JSON.stringify(savedProgress.value));
   }
 };
 </script>
@@ -257,16 +250,16 @@ const progressEdit = (save: boolean) => {
           <div class="flex text-gray-500 dark:text-gray-400 items-center">
             <p class="flex-auto text-xs font-bold items-center">
               SAVED PROGRESS
-              <span v-if="editState">
+              <span v-if="renameState">
                 <CheckIcon
                   class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
-                  @click="progressEdit(true)"
+                  @click="toggleRename(true)"
                 />
               </span>
               <span v-else>
                 <PencilSquareIcon
                   class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
-                  @click="progressEdit(false)"
+                  @click="toggleRename(false)"
                 />
               </span>
             </p>
@@ -289,7 +282,7 @@ const progressEdit = (save: boolean) => {
               />
             </div>
             <div class="flex-auto dark:text-gray-200">
-              <span v-if="editState">
+              <span v-if="renameState">
                 <input
                   type="text"
                   v-model="savedProgress[index].name"
