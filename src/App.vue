@@ -163,7 +163,7 @@ const savedProgress = computed<ProgressItem[]>({
           );
         })
         .map((progress: ProgressItem) => {
-          if (progress.name === undefined) {
+          if (!progress.name) {
             if (
               progress.src.includes('://cdn.md.chula.ac.th/content/') ||
               progress.src.includes('://cdn1.md.chula.ac.th/content/')
