@@ -318,7 +318,7 @@ const toggleRename = () => {
       </div>
 
       <div
-        class="mt-20 mb-56 text-xs font-light text-gray-400 transition duration-1000 dark:text-gray-400 text-center"
+        class="mt-20 mb-20 sm:mb-56 text-xs font-light text-gray-400 transition duration-1000 dark:text-gray-400 text-center"
       >
         <p class="mb-2">
           <small
