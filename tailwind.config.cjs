@@ -5,8 +5,8 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'special-day-light': "url('/bg-songkran-light.png')",
-        'special-day-dark': "url('/bg-songkran-dark.png')",
+        'special-day-light': "url('/bg-songkran-light.webp')",
+        'special-day-dark': "url('/bg-songkran-dark.webp')",
       }
     },
   },
