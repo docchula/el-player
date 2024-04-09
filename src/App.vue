@@ -214,7 +214,7 @@ const toggleRename = () => {
 
 <template>
   <div
-    class="relative flex items-top justify-center min-h-screen bg-valentine-light bg-bottom bg-[length:100%] bg-no-repeat bg-gray-50 transition duration-300 dark:bg-valentine-dark dark:bg-gray-900 sm:items-center sm:pt-0"
+    class="relative flex items-top justify-center min-h-screen bg-special-day-light bg-bottom bg-[length:100%] bg-no-repeat bg-gray-50 transition duration-300 dark:bg-special-day-dark dark:bg-gray-900 sm:items-center sm:pt-0"
   >
     <div class="absolute top-0 right-0 px-6 py-4 block font-light">
       <a
@@ -231,7 +231,7 @@ const toggleRename = () => {
       <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
         <h1 class="mx-auto text-6xl font-extrabold md:px-4 lg:px-12">
           <span
-            class="text-transparent bg-clip-text bg-gradient-to-br from-emerald-300 dark:from-emerald-200 to-green-700 dark:to-green-600"
+            class="text-transparent bg-clip-text bg-gradient-to-br from-sky-300 dark:from-sky-200 to-cyan-700 dark:to-cyan-600"
             >Docchula</span
           >
           <span class="text-4xl">&ensp;</span>
@@ -287,7 +287,7 @@ const toggleRename = () => {
                   type="text"
                   v-model="savedProgress[index].name"
                   @keyup.enter="toggleRename"
-                  class="rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+                  class="rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
                 />
               </span>
               <span v-else> {{ progress.name }} </span>&ensp;
@@ -318,7 +318,7 @@ const toggleRename = () => {
       </div>
 
       <div
-        class="mt-20 mb-4 text-xs font-light text-gray-400 transition duration-1000 dark:text-gray-400 text-center"
+        class="mt-20 mb-20 sm:mb-56 text-xs font-light text-gray-400 transition duration-1000 dark:text-gray-400 text-center"
       >
         <p class="mb-2">
           <small
