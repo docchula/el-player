@@ -1,0 +1,26 @@
+services:
+  vuejs:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: el-player-app
+    pull_policy: build
+    restart: always
+    labels:
+      # Traefik configuration discovery
+      # https://doc.traefik.io/traefik/providers/docker/#routing-configuration-with-labels
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.el-player-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.el-player-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.el-player-http.middlewares=el-player-redirect"
+      - "traefik.http.routers.el-player-http.rule=Host(`player.docchula.com`)"
+      - "traefik.http.routers.el-player-http.entrypoints=web"
+      - "traefik.http.routers.el-player-https.rule=Host(`player.docchula.com`)"
+      - "traefik.http.routers.el-player-https.entrypoints=websecure"
+      - "traefik.http.routers.el-player-https.tls.certresolver=leresolver"
+      - "traefik.http.services.el-player-https.loadbalancer.server.port=3000"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
