@@ -19,7 +19,7 @@ const url = ref(props?.url);
         <input
           id="url"
           v-model.trim="url"
-          class="block w-full rounded-md border-gray-300 focus:border-green-400 transition duration-1000 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
+          class="block w-full rounded-md border-gray-300 focus:border-orange-400 transition duration-1000 dark:focus:border-orange-800 focus:ring-orange-400 dark:focus:ring-orange-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
           placeholder="https://cdn.md.chula.ac.th/aculearn-idm/..."
           type="text"
         />
@@ -32,7 +32,7 @@ const url = ref(props?.url);
     </div>
     <button
       :class="{
-        'border-green-500 dark:border-green-600 text-green-500 dark:text-green-600':
+        'border-orange-500 dark:border-orange-600 text-orange-500 dark:text-orange-600':
           url,
         'border-gray-500 dark:border-gray-600 dark:text-gray-600': !url,
       }"
