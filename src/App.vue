@@ -218,7 +218,7 @@ const toggleRename = () => {
   >
     <div class="absolute top-0 right-0 px-6 py-4 block font-light">
       <a
-        class="text-sm text-gray-500 dark:text-gray-400 underline"
+        class="text-sm text-white underline"
         href="http://e-learning.md.chula.ac.th"
         target="_blank"
         >MDCU E-Learning</a
@@ -235,10 +235,7 @@ const toggleRename = () => {
             >Docchula</span
           >
           <span class="text-4xl">&ensp;</span>
-          <span
-            class="text-gray-700 transition duration-1000 dark:text-gray-200"
-            >Video Player</span
-          >
+          <span class="text-white transition duration-1000">Video Player</span>
         </h1>
       </div>
 
@@ -247,25 +244,25 @@ const toggleRename = () => {
           v-if="savedProgress.length > 0 && !hideProgress"
           class="space-y-2 rounded p-3 pt-1 mb-4 bg-gray-200 dark:bg-gray-700 items-center overflow-y-auto max-h-72"
         >
-          <div class="flex text-gray-500 dark:text-gray-400 items-center">
+          <div class="flex text-gray-600 dark:text-gray-400 items-center">
             <p class="flex-auto text-xs font-bold items-center">
               SAVED PROGRESS
               <span v-if="renameState">
                 <CheckIcon
-                  class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                  class="w-4 h-4 inline-block cursor-pointer hover:text-white"
                   @click="toggleRename"
                 />
               </span>
               <span v-else>
                 <PencilSquareIcon
-                  class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                  class="w-4 h-4 inline-block cursor-pointer hover:text-white"
                   @click="toggleRename"
                 />
               </span>
             </p>
             <div class="text-right">
               <XMarkIcon
-                class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                class="w-4 h-4 inline-block cursor-pointer hover:text-white"
                 @click="hideProgress = true"
               />
             </div>
@@ -281,16 +278,17 @@ const toggleRename = () => {
                 class="w-full"
               />
             </div>
-            <div class="flex-auto dark:text-gray-200">
+            <div class="flex-auto">
               <span v-if="renameState">
                 <input
                   type="text"
                   v-model="savedProgress[index].name"
                   @keyup.enter="toggleRename"
-                  class="rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                  class="rounded-md border-0 py-1.5 text-white ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                 />
               </span>
-              <span v-else> {{ progress.name }} </span>&ensp;
+              <span v-else class="dark:text-white"> {{ progress.name }} </span
+              >&ensp;
               <span class="text-sm text-gray-600 dark:text-gray-300">
                 ({{ Math.round(progress.currentTime / 60) }} min/{{
                   Math.round(progress.duration / 60)
@@ -298,16 +296,16 @@ const toggleRename = () => {
                 min)
               </span>
             </div>
-            <div class="text-center text-gray-500 dark:text-gray-400">
+            <div class="text-center text-gray-600 dark:text-gray-400">
               <PlayIcon
-                class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                class="w-6 h-6 inline-block cursor-pointer hover:text-white"
                 @click="processUrl(progress)"
               />
               <!-- ArrowTopRightOnSquareIcon
               class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
             / -->
               <TrashIcon
-                class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                class="w-6 h-6 inline-block cursor-pointer hover:text-white"
                 @click="progressDelete(progress)"
               />
             </div>
@@ -318,16 +316,16 @@ const toggleRename = () => {
       </div>
 
       <div
-        class="mt-20 mb-4 text-xs font-light text-gray-400 transition duration-1000 dark:text-gray-400 text-center"
+        class="mt-20 mb-4 text-xs font-light text-slate-300 transition duration-1000 text-center"
       >
         <p class="mb-2">
           <small
-            class="uppercase p-0.5 mr-1 border rounded-sm text-gray-300 border-gray-300 dark:text-gray-500 dark:border-gray-500"
+            class="uppercase p-0.5 mr-1 border rounded-sm text-slate-300 border-gray-300 dark:border-gray-500"
             >Beta</small
           >
           MDCU E-Learning is now accessible through
           <a
-            class="text-gray-500 dark:text-gray-300"
+            class="text-slate-300"
             href="https://flick.docchula.com"
             target="_blank"
             >Docchula Flick</a
@@ -336,12 +334,12 @@ const toggleRename = () => {
         </p>
         <p class="mb-2">
           <small
-            class="uppercase p-0.5 mr-1 border rounded-sm text-gray-300 border-gray-300 dark:text-gray-500 dark:border-gray-500"
+            class="uppercase p-0.5 mr-1 border rounded-sm text-slate-300 border-gray-300 dark:border-gray-500"
             >Beta</small
           >
           Introducing
           <a
-            class="text-gray-500 dark:text-gray-300"
+            class="text-slate-300"
             href="https://random.docchula.com"
             target="_blank"
             >Dog Randomizer</a
@@ -350,32 +348,32 @@ const toggleRename = () => {
         <p>
           Created with ❤ by Keen&nbsp;|&nbsp;
           <a
-            class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            class="text-slate-300 hover:underline hover:text-white"
             href="https://github.com/docchula/el-player"
             target="_blank"
             >Source Code</a
           >&nbsp;|&nbsp;
           <span class="hidden md:inline">
             <a
-              class="cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+              class="cursor-pointer text-slate-300 hover:underline hover:text-white"
               @click="showBookmarkModal = true"
               >Add to Bookmark</a
             >&nbsp;|&nbsp;
           </span>
           <SunIcon
-            class="inline-block h-5 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            class="inline-block h-5 cursor-pointer text-slate-300 hover:underline hover:text-white"
             title="Toggle dark theme"
             @click="toggleDarkMode"
           />&nbsp;
           <LockOpenIcon
             v-if="lockTheme === 'false'"
-            class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            class="inline-block h-4 cursor-pointer text-slate-300 hover:underline hover:text-white"
             title="Enable theme lock"
             @click="toggleLockTheme"
           />
           <LockClosedIcon
             v-else
-            class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            class="inline-block h-4 cursor-pointer text-slate-300 hover:underline hover:text-white"
             title="Disable dark theme"
             @click="toggleLockTheme"
           />

@@ -118,7 +118,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
   <button
     :class="{
       'text-gray-600 dark:text-gray-300': isOpen || timer.left > 0,
-      'text-gray-400 dark:text-gray-500': !isOpen && timer.left <= 0,
+      'text-white': !isOpen && timer.left <= 0,
     }"
     class="cursor-pointer relative text-sm block"
     @click="isOpen = !isOpen"

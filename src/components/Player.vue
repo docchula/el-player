@@ -105,8 +105,8 @@ onMounted(() => {
             )
               ? props.source.src.replace('/media/1.mp4', '/index/0.jpg')
               : props.source.src.includes('//drive.google.com/')
-              ? props.source.src.replace('uc?export=download&', 'thumbnail?')
-              : null,
+                ? props.source.src.replace('uc?export=download&', 'thumbnail?')
+                : null,
           });
 
           localStorage.setItem('ProgressSave-v1', JSON.stringify(progressList));
@@ -260,12 +260,10 @@ const origin = window.location.origin;
   >
     Your browser does not support the video tag.
   </video>
-  <div class="my-4 text-gray-500 dark:text-gray-200">
+  <div class="my-4 text-white">
     <div class="mb-2 sm:flex gap-4 space-y-2">
       <div class="flex-auto">
-        <p
-          class="my-2 hidden md:block text-gray-400 dark:text-gray-400 text-sm"
-        >
+        <p class="my-2 hidden md:block text-white text-sm">
           <b>Hotkeys</b>&emsp; Space: Pause, ▲/▼: Volume, ◄/►: Seek, F:
           Fullscreen<span :class="{ 'opacity-0': !isClockEnabled }"
             >, T: Toggle clock</span
@@ -275,7 +273,7 @@ const origin = window.location.origin;
       </div>
       <div>
         <button
-          class="cursor-pointer text-orange-600 hover:text-white py-1 px-4 bg-transparent font-semibold border border-orange-600 rounded hover:bg-orange-600 hover:border-transparent transition ease-in duration-200"
+          class="cursor-pointer text-amber-200 hover:text-white py-1 px-4 bg-transparent font-semibold border border-orange-600 rounded hover:bg-orange-600 hover:border-transparent transition ease-in duration-200"
           @click="promptPlaybackSpeed"
         >
           Set playback speed
@@ -283,34 +281,24 @@ const origin = window.location.origin;
       </div>
     </div>
 
-    <label
-      class="block my-1 text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
-    >
+    <label class="block my-1 text-sm text-white cursor-pointer">
       <div class="flex items-center">
         <Checkbox v-model:checked="isProgressSaveEnabled" />
         <div class="ml-2">
           Save video progress in this device
-          <p
-            v-if="isProgressSaveEnabled"
-            class="text-xs text-gray-500 dark:text-gray-500"
-          >
+          <p v-if="isProgressSaveEnabled" class="text-xs text-white">
             After you close this tab, just visit <i>{{ origin }}</i> to resume
             watching.
           </p>
         </div>
       </div>
     </label>
-    <label
-      class="block my-1 text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
-    >
+    <label class="block my-1 text-sm text-white cursor-pointer">
       <div class="flex items-center">
         <Checkbox v-model:checked="isClockEnabled" />
         <div class="ml-2">
           Show clock in the player
-          <p
-            v-if="isClockEnabled"
-            class="text-xs text-gray-500 dark:text-gray-500"
-          >
+          <p v-if="isClockEnabled" class="text-xs text-white">
             The clock is shown at the top-left corner of the player after the
             video starts playing.
           </p>
@@ -318,7 +306,7 @@ const origin = window.location.origin;
       </div>
     </label>
   </div>
-  <div class="tracking-wide text-center text-orange-600 dark:text-red-500 mt-6">
+  <div class="tracking-wide text-center text-amber-200 mt-6">
     <a class="cursor-pointer" @click="$emit('back')">
       <ChevronLeftIcon class="inline-block h-5" />
       Back</a
