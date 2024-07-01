@@ -2,10 +2,19 @@
 import Home from './components/Home.vue';
 import Player from './components/Player.vue';
 import Timer from './components/Timer.vue';
-import {computed, onMounted, ref} from 'vue';
-import {CheckIcon, LockClosedIcon, LockOpenIcon, PencilSquareIcon, PlayIcon, SunIcon, TrashIcon, XMarkIcon} from '@heroicons/vue/20/solid';
+import { computed, onMounted, ref } from 'vue';
+import {
+  CheckIcon,
+  LockClosedIcon,
+  LockOpenIcon,
+  PencilSquareIcon,
+  PlayIcon,
+  SunIcon,
+  TrashIcon,
+  XMarkIcon,
+} from '@heroicons/vue/20/solid';
 import BookmarkModal from './components/BookmarkModal.vue';
-import {ProgressItem} from './types';
+import { ProgressItem } from './types';
 
 const source = ref<{
   src: string;
@@ -66,7 +75,7 @@ const processUrl = (rawInput: string | { src: string } | null) => {
           }
         } else if (
           rawInput?.match(
-            /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/i
+            /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/i,
           )
         ) {
           // YouTube URL
@@ -86,7 +95,7 @@ const processUrl = (rawInput: string | { src: string } | null) => {
         'http://' +
           window.location.host +
           '/?downgraded=true&url=' +
-          encodeURIComponent(input.src)
+          encodeURIComponent(input.src),
       );
     }
   }
@@ -154,7 +163,8 @@ const savedProgress = computed<ProgressItem[]>({
       if (!Array.isArray(progressList)) {
         progressList = [progressList];
       }
-      return progressList.filter((progress: ProgressItem) => {
+      return progressList
+        .filter((progress: ProgressItem) => {
           return (
             (progress.src?.toLowerCase().split('?').shift() !==
               source.value?.src?.toLowerCase().split('?').shift() ||
@@ -206,7 +216,10 @@ onMounted(() => {
 const renameState = ref<boolean>(false);
 const toggleRename = () => {
   if (renameState.value) {
-    localStorage.setItem('ProgressSave-v1', JSON.stringify(savedProgress.value));
+    localStorage.setItem(
+      'ProgressSave-v1',
+      JSON.stringify(savedProgress.value),
+    );
   }
   renameState.value = !renameState.value;
 };
@@ -214,24 +227,24 @@ const toggleRename = () => {
 
 <template>
   <div
-    class="relative flex items-top justify-center min-h-screen bg-special-day-light bg-bottom bg-[length:100%] bg-no-repeat bg-gray-50 transition duration-300 dark:bg-special-day-dark dark:bg-gray-900 sm:items-center sm:pt-0"
+    class="items-top bg-special-day-light dark:bg-special-day-dark relative flex min-h-screen justify-center bg-gray-50 bg-[length:100%] bg-bottom bg-no-repeat transition duration-300 dark:bg-gray-900 sm:items-center sm:pt-0"
   >
-    <div class="absolute top-0 right-0 px-6 py-4 block font-light">
+    <div class="absolute right-0 top-0 block px-6 py-4 font-light">
       <a
-        class="text-sm text-gray-500 dark:text-gray-400 underline"
+        class="text-sm text-gray-500 underline dark:text-gray-400"
         href="http://e-learning.md.chula.ac.th"
         target="_blank"
         >MDCU E-Learning</a
       >
     </div>
-    <div class="absolute top-0 left-0 px-6 py-4 block z-40">
+    <div class="absolute left-0 top-0 z-40 block px-6 py-4">
       <Timer />
     </div>
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-10 md:mt-12">
+    <div class="mx-auto mt-6 max-w-6xl px-4 sm:mt-10 sm:px-6 md:mt-12 lg:px-8">
       <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
         <h1 class="mx-auto text-6xl font-extrabold md:px-4 lg:px-12">
           <span
-            class="text-transparent bg-clip-text bg-gradient-to-br from-emerald-300 dark:from-emerald-200 to-green-700 dark:to-green-600"
+            class="bg-gradient-to-br from-emerald-300 to-green-700 bg-clip-text text-transparent dark:from-emerald-200 dark:to-green-600"
             >Docchula</span
           >
           <span class="text-4xl">&ensp;</span>
@@ -245,27 +258,27 @@ const toggleRename = () => {
       <div class="mt-8">
         <div
           v-if="savedProgress.length > 0 && !hideProgress"
-          class="space-y-2 rounded p-3 pt-1 mb-4 bg-gray-200 dark:bg-gray-700 items-center overflow-y-auto max-h-72"
+          class="mb-4 max-h-72 items-center space-y-2 overflow-y-auto rounded bg-gray-200 p-3 pt-1 dark:bg-gray-700"
         >
-          <div class="flex text-gray-500 dark:text-gray-400 items-center">
-            <p class="flex-auto text-xs font-bold items-center">
+          <div class="flex items-center text-gray-500 dark:text-gray-400">
+            <p class="flex-auto items-center text-xs font-bold">
               SAVED PROGRESS
               <span v-if="renameState">
                 <CheckIcon
-                  class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                  class="inline-block h-4 w-4 cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
                   @click="toggleRename"
                 />
               </span>
               <span v-else>
                 <PencilSquareIcon
-                  class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                  class="inline-block h-4 w-4 cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
                   @click="toggleRename"
                 />
               </span>
             </p>
             <div class="text-right">
               <XMarkIcon
-                class="w-4 h-4 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                class="inline-block h-4 w-4 cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
                 @click="hideProgress = true"
               />
             </div>
@@ -300,14 +313,14 @@ const toggleRename = () => {
             </div>
             <div class="text-center text-gray-500 dark:text-gray-400">
               <PlayIcon
-                class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                class="inline-block h-6 w-6 cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
                 @click="processUrl(progress)"
               />
               <!-- ArrowTopRightOnSquareIcon
               class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
             / -->
               <TrashIcon
-                class="w-6 h-6 inline-block cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
+                class="inline-block h-6 w-6 cursor-pointer hover:text-gray-600 hover:dark:text-gray-300"
                 @click="progressDelete(progress)"
               />
             </div>
@@ -318,11 +331,11 @@ const toggleRename = () => {
       </div>
 
       <div
-        class="mt-20 mb-4 text-xs font-light text-gray-400 transition duration-1000 dark:text-gray-400 text-center"
+        class="mb-4 mt-20 text-center text-xs font-light text-gray-400 transition duration-1000 dark:text-gray-400"
       >
         <p class="mb-2">
           <small
-            class="uppercase p-0.5 mr-1 border rounded-sm text-gray-300 border-gray-300 dark:text-gray-500 dark:border-gray-500"
+            class="mr-1 rounded-sm border border-gray-300 p-0.5 uppercase text-gray-300 dark:border-gray-500 dark:text-gray-500"
             >Beta</small
           >
           MDCU E-Learning is now accessible through
@@ -336,7 +349,7 @@ const toggleRename = () => {
         </p>
         <p class="mb-2">
           <small
-            class="uppercase p-0.5 mr-1 border rounded-sm text-gray-300 border-gray-300 dark:text-gray-500 dark:border-gray-500"
+            class="mr-1 rounded-sm border border-gray-300 p-0.5 uppercase text-gray-300 dark:border-gray-500 dark:text-gray-500"
             >Beta</small
           >
           Introducing
@@ -350,32 +363,32 @@ const toggleRename = () => {
         <p>
           Created with ❤ by Keen&nbsp;|&nbsp;
           <a
-            class="text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            class="text-slate-300 hover:text-gray-400 hover:underline dark:text-slate-500 dark:hover:text-gray-300"
             href="https://github.com/docchula/el-player"
             target="_blank"
             >Source Code</a
           >&nbsp;|&nbsp;
           <span class="hidden md:inline">
             <a
-              class="cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+              class="cursor-pointer text-slate-300 hover:text-gray-400 hover:underline dark:text-slate-500 dark:hover:text-gray-300"
               @click="showBookmarkModal = true"
               >Add to Bookmark</a
             >&nbsp;|&nbsp;
           </span>
           <SunIcon
-            class="inline-block h-5 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            class="inline-block h-5 cursor-pointer text-slate-300 hover:text-gray-400 hover:underline dark:text-slate-500 dark:hover:text-gray-300"
             title="Toggle dark theme"
             @click="toggleDarkMode"
           />&nbsp;
           <LockOpenIcon
             v-if="lockTheme === 'false'"
-            class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            class="inline-block h-4 cursor-pointer text-slate-300 hover:text-gray-400 hover:underline dark:text-slate-500 dark:hover:text-gray-300"
             title="Enable theme lock"
             @click="toggleLockTheme"
           />
           <LockClosedIcon
             v-else
-            class="inline-block h-4 cursor-pointer text-slate-300 dark:text-slate-500 hover:underline hover:text-gray-400 dark:hover:text-gray-300"
+            class="inline-block h-4 cursor-pointer text-slate-300 hover:text-gray-400 hover:underline dark:text-slate-500 dark:hover:text-gray-300"
             title="Disable dark theme"
             @click="toggleLockTheme"
           />
