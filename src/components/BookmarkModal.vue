@@ -26,7 +26,7 @@ watch(
     } else {
       document.body.style.overflow = '';
     }
-  }
+  },
 );
 
 const close = () => {
@@ -64,7 +64,7 @@ const maxWidthClass = computed(() => {
     <transition leave-active-class="duration-200">
       <div
         v-show="show"
-        class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
+        class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:px-0"
       >
         <transition
           enter-active-class="ease-out duration-300"
@@ -94,14 +94,14 @@ const maxWidthClass = computed(() => {
           <div
             v-show="show"
             :class="maxWidthClass"
-            class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
+            class="mb-6 transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:mx-auto sm:w-full"
           >
             <div class="px-6 py-4">
-              <div class="font-bold text-lg">Add to Bookmark</div>
+              <div class="text-lg font-bold">Add to Bookmark</div>
 
               <div class="mt-4">
                 <a
-                  class="my-4 inline-block p-2 border rounded bg-gray-50 hover:bg-gray-100"
+                  class="my-4 inline-block rounded border bg-gray-50 p-2 hover:bg-gray-100"
                   href="javascript:window.location.href=document.location.protocol+'//player.docchula.com/?url='+encodeURIComponent(document.location.href)"
                   @click.prevent=""
                 >
@@ -119,9 +119,9 @@ const maxWidthClass = computed(() => {
             </div>
 
             <div
-              class="flex flex-row justify-end px-6 py-4 bg-gray-100 text-right"
+              class="flex flex-row justify-end bg-gray-100 px-6 py-4 text-right"
             >
-              <button class="px-2 rounded hover:bg-gray-200" @click="close">
+              <button class="rounded px-2 hover:bg-gray-200" @click="close">
                 Close
               </button>
             </div>

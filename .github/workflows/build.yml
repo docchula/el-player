@@ -2,11 +2,11 @@ name: Build & Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   laravel-tests:
-    runs-on: [ self-hosted, linux, x64 ]
+    runs-on: [self-hosted, linux, x64]
 
     steps:
       - uses: actions/checkout@v3
