@@ -284,7 +284,7 @@ const toggleRename = () => {
                   type="text"
                   v-model="savedProgress[index].name"
                   @keyup.enter="toggleRename"
-                  class="rounded-md border-0 py-1.5 text-white ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                  class="rounded-md border-0 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                 />
               </span>
               <span v-else class="dark:text-white"> {{ progress.name }} </span
