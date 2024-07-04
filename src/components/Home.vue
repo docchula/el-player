@@ -10,31 +10,27 @@ const url = ref(props?.url);
 <template>
   <form @submit.prevent="$emit('submit', url)">
     <div class="mb-4">
-      <label
-        class="block text-sm font-medium text-gray-700 dark:text-gray-500"
-        for="url"
+      <label class="block text-sm font-medium text-white" for="url"
         >Video URL</label
       >
       <div class="relative mt-1 rounded-md shadow-sm">
         <input
           id="url"
           v-model.trim="url"
-          class="block w-full rounded-md border-gray-300 focus:border-green-400 transition duration-1000 dark:focus:border-green-800 focus:ring-green-400 dark:focus:ring-green-800 sm:text-sm dark:bg-gray-800 dark:text-gray-200"
+          class="block w-full rounded-md border-gray-300 focus:border-orange-400 transition duration-1000 dark:focus:border-orange-800 focus:ring-orange-400 dark:focus:ring-orange-800 sm:text-sm dark:bg-gray-800"
           placeholder="https://cdn.md.chula.ac.th/aculearn-idm/..."
           type="text"
         />
       </div>
-      <p
-        class="py-1 text-xs text-gray-400 transition duration-1000 dark:text-gray-700"
-      >
+      <p class="py-1 text-xs text-white transition duration-1000">
         Supports MDCU E-Learning, Google Drive (public file), and YouTube
       </p>
     </div>
     <button
       :class="{
-        'border-green-500 dark:border-green-600 text-green-500 dark:text-green-600':
+        'border-orange-500 dark:border-orange-600 text-orange-500 dark:text-orange-600':
           url,
-        'border-gray-500 dark:border-gray-600 dark:text-gray-600': !url,
+        'border-gray-500 dark:border-gray-600 ': !url,
       }"
       :disabled="!url"
       class="group relative flex w-full justify-center rounded-md py-2 px-4 text-sm font-medium border-2 hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
