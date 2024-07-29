@@ -84,7 +84,7 @@ onMounted(() => {
               p.src.toLowerCase().split('?').shift() !==
                 props.source.src.toLowerCase().split('?').shift() &&
               p.updated_at &&
-              new Date(p.updated_at) > expireLimit
+              new Date(p.updated_at) > expireLimit,
           );
           if (progressList.length >= 10) {
             // Save only 10 latest progress
@@ -101,12 +101,12 @@ onMounted(() => {
             name: props.source.name ?? null,
             updated_at: new Date().toISOString(),
             thumbnail: props.source.src.includes(
-              '//cdn.md.chula.ac.th/content/'
+              '//cdn.md.chula.ac.th/content/',
             )
               ? props.source.src.replace('/media/1.mp4', '/index/0.jpg')
               : props.source.src.includes('//drive.google.com/')
-              ? props.source.src.replace('uc?export=download&', 'thumbnail?')
-              : null,
+                ? props.source.src.replace('uc?export=download&', 'thumbnail?')
+                : null,
           });
 
           localStorage.setItem('ProgressSave-v1', JSON.stringify(progressList));
@@ -118,7 +118,7 @@ onMounted(() => {
       if (props.source.playbackRate) {
         player.playbackRate(props.source.playbackRate);
       }
-    }
+    },
   );
 
   // set hotkey "T" to toggle clock
@@ -140,7 +140,7 @@ onBeforeUnmount(() => {
 const promptPlaybackSpeed = () => {
   const speed = prompt(
     'Specify playback speed (between 0.2-5.0)',
-    player.playbackRate().toString()
+    player.playbackRate().toString(),
   );
   if (speed) {
     const speedNum = parseFloat(speed);
@@ -261,10 +261,10 @@ const origin = window.location.origin;
     Your browser does not support the video tag.
   </video>
   <div class="my-4 text-gray-500 dark:text-gray-200">
-    <div class="mb-2 sm:flex gap-4 space-y-2">
+    <div class="mb-2 gap-4 space-y-2 sm:flex">
       <div class="flex-auto">
         <p
-          class="my-2 hidden md:block text-gray-400 dark:text-gray-400 text-sm"
+          class="my-2 hidden text-sm text-gray-400 dark:text-gray-400 md:block"
         >
           <b>Hotkeys</b>&emsp; Space: Pause, ▲/▼: Volume, ◄/►: Seek, F:
           Fullscreen<span :class="{ 'opacity-0': !isClockEnabled }"
@@ -275,7 +275,7 @@ const origin = window.location.origin;
       </div>
       <div>
         <button
-          class="cursor-pointer text-green-600 hover:text-white py-1 px-4 bg-transparent font-semibold border border-green-600 rounded hover:bg-green-600 hover:border-transparent transition ease-in duration-200"
+          class="cursor-pointer rounded border border-green-600 bg-transparent px-4 py-1 font-semibold text-green-600 transition duration-200 ease-in hover:border-transparent hover:bg-green-600 hover:text-white"
           @click="promptPlaybackSpeed"
         >
           Set playback speed
@@ -284,7 +284,7 @@ const origin = window.location.origin;
     </div>
 
     <label
-      class="block my-1 text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
+      class="my-1 block cursor-pointer text-sm text-gray-600 dark:text-gray-400"
     >
       <div class="flex items-center">
         <Checkbox v-model:checked="isProgressSaveEnabled" />
@@ -301,7 +301,7 @@ const origin = window.location.origin;
       </div>
     </label>
     <label
-      class="block my-1 text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
+      class="my-1 block cursor-pointer text-sm text-gray-600 dark:text-gray-400"
     >
       <div class="flex items-center">
         <Checkbox v-model:checked="isClockEnabled" />
@@ -318,7 +318,7 @@ const origin = window.location.origin;
       </div>
     </label>
   </div>
-  <div class="tracking-wide text-center text-green-600 dark:text-red-500 mt-6">
+  <div class="mt-6 text-center tracking-wide text-green-600 dark:text-red-500">
     <a class="cursor-pointer" @click="$emit('back')">
       <ChevronLeftIcon class="inline-block h-5" />
       Back</a

@@ -120,7 +120,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
       'text-gray-600 dark:text-gray-300': isOpen || timer.left > 0,
       'text-gray-400 dark:text-gray-500': !isOpen && timer.left <= 0,
     }"
-    class="cursor-pointer relative text-sm block"
+    class="relative block cursor-pointer text-sm"
     @click="isOpen = !isOpen"
   >
     <template v-if="isOpen || timer.left <= 0">
@@ -142,7 +142,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
   >
     <div
       v-if="isOpen"
-      class="box-border p-4 mt-2 rounded-lg bg-gray-200/50 backdrop-blur transition duration-1000 dark:bg-gray-700/50 block text-sm text-gray-700 dark:text-gray-500"
+      class="mt-2 box-border block rounded-lg bg-gray-200/50 p-4 text-sm text-gray-700 backdrop-blur transition duration-1000 dark:bg-gray-700/50 dark:text-gray-500"
     >
       <div class="text-center">
         <h2 class="text-lg font-bold dark:text-gray-400">
@@ -153,7 +153,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
             target="_blank"
           >
             <QuestionMarkCircleIcon
-              class="inline-block h-5 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
+              class="inline-block h-5 cursor-pointer text-slate-400 hover:text-gray-500 hover:underline dark:text-slate-500 dark:hover:text-gray-300"
             />
           </a>
         </h2>
@@ -162,7 +162,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
         </div>
         <div class="buttons">
           <a
-            class="mx-1 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
+            class="mx-1 cursor-pointer text-slate-400 hover:text-gray-500 hover:underline dark:text-slate-500 dark:hover:text-gray-300"
             @click="startTimer"
           >
             <PlayIcon v-if="timer.timerId === 0" class="inline-block h-7" />
@@ -170,17 +170,17 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
           </a>
           <ForwardIcon
             v-if="timer.left > 8"
-            class="inline-block h-6 mx-1 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
+            class="mx-1 inline-block h-6 cursor-pointer text-slate-400 hover:text-gray-500 hover:underline dark:text-slate-500 dark:hover:text-gray-300"
             @click="forwardTimer"
           />
           <ArrowPathIcon
             v-if="timer.left > 0 || timer.count > 0"
-            class="inline-block h-6 mx-1 cursor-pointer text-slate-400 dark:text-slate-500 hover:underline hover:text-gray-500 dark:hover:text-gray-300"
+            class="mx-1 inline-block h-6 cursor-pointer text-slate-400 hover:text-gray-500 hover:underline dark:text-slate-500 dark:hover:text-gray-300"
             @click="resetTimer"
           />
         </div>
       </div>
-      <div class="space-y-1 sm:space-y-2 mt-2">
+      <div class="mt-2 space-y-1 sm:space-y-2">
         <div>
           <label for="input-study">Study Duration</label>
           <div class="flex items-center gap-2">
@@ -232,7 +232,7 @@ const enforceNumberOnly = (event: KeyboardEvent) => {
       </div>
     </div>
   </transition>
-  <div class="absolute top-0 left-0 w-screen h-1.5">
+  <div class="absolute left-0 top-0 h-1.5 w-screen">
     <div
       :class="{
         'bg-green-400 dark:bg-green-700': timer.title === 'Study',
