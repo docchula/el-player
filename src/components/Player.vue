@@ -249,6 +249,21 @@ const keyToggleClock = (event: KeyboardEvent) => {
   }
 };
 const origin = window.location.origin;
+
+let posterOrigin = '';
+switch (import.meta.env.VITE_SPECIAL_DAY) {
+  case 'valentine':
+    posterOrigin = "/poster-valentine.webp";
+    break;
+  case 'halloween':
+    posterOrigin = "/poster-halloween.webp";
+    break;
+  case 'christmas':
+    posterOrigin = "/poster-christmas.webp";
+    break;
+  default:
+    break;
+}
 </script>
 
 <template>
@@ -257,6 +272,7 @@ const origin = window.location.origin;
     class="video-js vjs-default-skin vjs-big-play-centered w-max"
     controls
     preload="metadata"
+    :poster="posterOrigin"
   >
     Your browser does not support the video tag.
   </video>
@@ -275,7 +291,7 @@ const origin = window.location.origin;
       </div>
       <div>
         <button
-          class="cursor-pointer rounded border border-green-600 bg-transparent px-4 py-1 font-semibold text-green-600 transition duration-200 ease-in hover:border-transparent hover:bg-green-600 hover:text-white"
+          class="cursor-pointer rounded border border-primary-600 bg-transparent px-4 py-1 font-semibold text-primary-600 transition duration-200 ease-in hover:border-transparent hover:bg-primary-600 hover:text-white"
           @click="promptPlaybackSpeed"
         >
           Set playback speed
@@ -318,7 +334,7 @@ const origin = window.location.origin;
       </div>
     </label>
   </div>
-  <div class="mt-6 text-center tracking-wide text-green-600 dark:text-red-500">
+  <div class="mt-6 text-center tracking-wide text-primary-600 dark:text-red-500">
     <a class="cursor-pointer" @click="$emit('back')">
       <ChevronLeftIcon class="inline-block h-5" />
       Back</a
