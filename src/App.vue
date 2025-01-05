@@ -223,12 +223,18 @@ const toggleRename = () => {
   }
   renameState.value = !renameState.value;
 };
+
+const theme = import.meta.env.VITE_SPECIAL_DAY
 </script>
 
 <template>
   <div
-    class="items-top bg-special-day-light dark:bg-special-day-dark relative flex min-h-screen justify-center bg-gray-50 bg-[length:100%] bg-bottom bg-no-repeat transition duration-300 dark:bg-gray-900 sm:items-center sm:pt-0"
-  >
+    class="items-top bg-special-day-light dark:bg-special-day-dark relative flex min-h-screen justify-center bg-gray-50 transition duration-300 dark:bg-gray-900 sm:items-center sm:pt-0"
+    :class="{
+      'bg-cover': theme === 'christmas',
+      'bg-[length:100%] bg-bottom bg-no-repeat': theme === 'songkran' || theme === 'valentine',
+    }"
+    >
     <div class="absolute right-0 top-0 block px-6 py-4 font-light">
       <a
         class="text-sm text-gray-500 underline dark:text-gray-400"
@@ -244,11 +250,11 @@ const toggleRename = () => {
       <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
         <h1 class="mx-auto text-6xl font-extrabold md:px-4 lg:px-12">
           <span
-            class="bg-gradient-to-br from-emerald-300 to-green-700 bg-clip-text text-transparent dark:from-emerald-200 dark:to-green-600"
+            class="bg-gradient-to-br from-secondary-300 to-primary-700 bg-clip-text text-transparent dark:from-secondary-200 dark:to-primary-600"
             >Docchula</span
           >
           <span class="text-4xl">&ensp;</span>
-          <span
+            <span
             class="text-gray-700 transition duration-1000 dark:text-gray-200"
             >Video Player</span
           >
@@ -300,7 +306,7 @@ const toggleRename = () => {
                   type="text"
                   v-model="savedProgress[index].name"
                   @keyup.enter="toggleRename"
-                  class="rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+                  class="rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
                 />
               </span>
               <span v-else> {{ progress.name }} </span>&ensp;

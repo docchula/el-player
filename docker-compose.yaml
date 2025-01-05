@@ -6,6 +6,9 @@ services:
     image: el-player-app
     pull_policy: build
     restart: always
+    # Load environment variables from Portainer stack configuration
+    env_file:
+      - stack.env
     labels:
       # Traefik configuration discovery
       # https://doc.traefik.io/traefik/providers/docker/#routing-configuration-with-labels
@@ -21,4 +24,4 @@ services:
       resources:
         limits:
           cpus: '2'
-          memory: 1G
+          memory: 300M
