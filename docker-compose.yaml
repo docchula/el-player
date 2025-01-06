@@ -15,11 +15,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.el-player-http.rule=Host(`player.docchula.com`)"
       - "traefik.http.routers.el-player-http.entrypoints=web"
-      - "traefik.http.services.el-player-http.loadbalancer.server.port=80"
       - "traefik.http.routers.el-player-https.rule=Host(`player.docchula.com`)"
       - "traefik.http.routers.el-player-https.entrypoints=websecure"
       - "traefik.http.routers.el-player-https.tls.certresolver=leresolver"
-      - "traefik.http.services.el-player-https.loadbalancer.server.port=80"
+      - "traefik.http.services.el-player.loadbalancer.server.port=80"
     deploy:
       resources:
         limits:
