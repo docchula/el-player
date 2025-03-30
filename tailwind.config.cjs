@@ -2,7 +2,7 @@
 require('dotenv').config();
 const colors = require('tailwindcss/colors');
 
-const specialDay = process.env.VITE_SPECIAL_DAY;
+const specialDay = import.meta.env.VITE_SPECIAL_DAY;
 
 let primaryColor = colors.green;
 let secondaryColor = colors.emerald;
