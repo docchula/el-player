@@ -19,6 +19,7 @@ services:
       - "traefik.http.routers.el-player-https.entrypoints=websecure"
       - "traefik.http.routers.el-player-https.tls.certresolver=leresolver"
       - "traefik.http.services.el-player.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.el-player.compress=true"
     deploy:
       resources:
         limits:
