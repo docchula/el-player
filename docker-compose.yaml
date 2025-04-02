@@ -3,12 +3,11 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+      args:
+        - VITE_SPECIAL_DAY=${VITE_SPECIAL_DAY}
     image: el-player-app
     pull_policy: build
     restart: always
-    # Load environment variables from Portainer stack configuration
-    env_file:
-      - stack.env
     labels:
       # Traefik configuration discovery
       # https://doc.traefik.io/traefik/providers/docker/#routing-configuration-with-labels
