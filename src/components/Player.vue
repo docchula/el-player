@@ -5,7 +5,6 @@ import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import 'videojs-hotkeys';
 import 'videojs-overlay';
-import 'videojs-overlay/dist/videojs-overlay.css';
 import 'videojs-youtube';
 import Checkbox from './Checkbox.vue';
 import { ProgressItem } from '../types';
