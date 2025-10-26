@@ -83,21 +83,6 @@ const processUrl = (rawInput: string | { src: string } | null) => {
         }
       }
     }
-
-    if (
-      input &&
-      input.src.startsWith('http:') &&
-      window.location.protocol === 'https:' &&
-      !window.location.search.includes('downgraded')
-    ) {
-      // Automatically downgrade to HTTP if the page is HTTPS
-      window.location.replace(
-        'http://' +
-          window.location.host +
-          '/?downgraded=true&url=' +
-          encodeURIComponent(input.src),
-      );
-    }
   }
 
   source.value = input;
@@ -238,7 +223,7 @@ const theme = import.meta.env.VITE_SPECIAL_DAY
     <div class="absolute right-0 top-0 block px-6 py-4 font-light">
       <a
         class="text-sm text-gray-500 underline dark:text-gray-400"
-        href="http://e-learning.md.chula.ac.th"
+        href="https://e-learning.md.chula.ac.th"
         target="_blank"
         >MDCU E-Learning</a
       >
