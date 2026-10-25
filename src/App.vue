@@ -325,10 +325,6 @@ const theme = import.meta.env.VITE_SPECIAL_DAY
         class="mb-4 mt-20 text-center text-xs font-light text-gray-400 transition duration-1000 dark:text-gray-400"
       >
         <p class="mb-2">
-          <small
-            class="mr-1 rounded-sm border border-gray-300 p-0.5 uppercase text-gray-300 dark:border-gray-500 dark:text-gray-500"
-            >Beta</small
-          >
           MDCU E-Learning is now accessible through
           <a
             class="text-gray-500 dark:text-gray-300"
