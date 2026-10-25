@@ -8,9 +8,8 @@ ARG VITE_SPECIAL_DAY
 ENV VITE_SPECIAL_DAY=${VITE_SPECIAL_DAY}
 
 WORKDIR /app
-COPY package*.json ./
-COPY pnpm-lock.yaml ./
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
+COPY package*.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm build
 
